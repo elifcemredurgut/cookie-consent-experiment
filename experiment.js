@@ -235,7 +235,72 @@ const scenarios = [
         ]
     },
     // PART 4: SALIENT VS NEUTRAL BUTTON
-    // Case 1: 
+    // Case 1: Salient: Reject | Salient: Accept
+    {
+        name: "Cookie_1_SalientReject_SalientAccept",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "reject", text: "Reject All", class: "btn-salient" },
+            { id: "accept", text: "Accept All", class: "btn-salient" }
+        ]
+    },
+    // Case 2: Neutral: Reject | Salient: Accept
+    {
+        name: "Cookie_2_NeutralReject_SalientAccept",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "reject", text: "Reject All", class: "btn-neutral" },
+            { id: "accept", text: "Accept All", class: "btn-salient" }
+        ]
+    },
+    // Case 3: Salient: Reject | Neutral: Accept
+    {
+        name: "Cookie_3_SalientReject_NeutralAccept",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "reject", text: "Reject All", class: "btn-salient" },
+            { id: "accept", text: "Accept All", class: "btn-neutral" }
+        ]
+    },
+    // Case 4: Salient: Accept | Salient: Reject
+    {
+        name: "Cookie_4_SalientAccept_SalientReject",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "accept", text: "Accept All", class: "btn-salient" },
+            { id: "reject", text: "Reject All", class: "btn-salient" }
+        ]
+    },
+    // Case 5: Salient: Accept | Neutral: Reject
+    {
+        name: "Cookie_5_SalientAccept_NeutralReject",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "accept", text: "Accept All", class: "btn-salient" },
+            { id: "reject", text: "Reject All", class: "btn-neutral" },
+        ]
+    },
+    // Case 6: Neutral: Accept | Salient: Reject
+    {
+        name: "Cookie_6_NeutralAccept_SalientReject",
+        isStroop: false,
+        title: "Cookie Preferences",
+        text: "We use cookies to ensure you get the best experience on our website.",
+        buttons: [
+            { id: "accept", text: "Accept All", class: "btn-neutral" },
+            { id: "reject", text: "Reject All", class: "btn-salient" },
+        ]
+    },
     
 ];
 
