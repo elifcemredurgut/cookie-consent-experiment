@@ -1,0 +1,46 @@
+Cases:
+1- Simple stroop effect tests
+    i.   text: red color: red vs text: green color: green --> ask to choose the text says red
+    ii.  text: red color: red vs text: green color: green --> ask to choose the red colored
+    iii. text: red color: green vs text: green color: red --> ask to choose the text says red
+    iv.  text: red color: green vs text: green color: red --> ask to choose the red colored
+2- Cookie tests
+    i.   Button vs link
+        link: accept button: reject
+        link: accept button: accept essential
+        link: accept button: manage
+        link: reject button: accept
+        link: accept essential button: accept
+        link: manage button: accept
+        ---
+        link: accept, button: reject, button: accept essential
+        link: accept, button: manage, button: accept essential
+        link: accept, button: manage, button: reject
+        link: reject button: accept, button: accept essential
+        link: reject button: accept, button: manage
+        link: accept essential, button: accept button: manage
+        link: accept essential, button: accept button: reject
+        link: manage button: accept button: reject
+        link: manage button: accept button: accept essential
+	ii.  Colors (traffic lights)
+	iii. Button wording
+	iv.  Button structure (reject is hidden)
+	v.   Explanation text (informing the user)
+    vi.  Button placement
+        left: accept right: reject
+        left: accept right: accept essential
+        left: accept right: manage
+        left: reject right: accept 
+        left: accept essential right: accept
+        left: manage right: accept
+        ---
+        
+    vii. Form placement
+3- Real life scenarios
+
+
+    i. Button placement (accept-reject) (left right or up down)
+			ii. Button color (both neutral color, one bright one neutral, both bright)
+			iii. Button vs link
+			iv. Explanation text with shaming/forcing user
+Different texts
