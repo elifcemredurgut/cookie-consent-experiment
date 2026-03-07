@@ -317,16 +317,12 @@ function startExperiment() {
 
 function loadScenario() {
     document.getElementById('experiment-phase').classList.add('hidden');
-    //document.getElementById('fixation-phase').classList.remove('hidden');
-
-    //setTimeout(() => {
-    //    document.getElementById('fixation-phase').classList.add('hidden');
-    //    renderBanner();
-    //}, 1500);
-    renderBanner(); //comment when using fixation phase
+    document.getElementById('fixation-phase').classList.remove('hidden');
+    //renderBanner(); //comment when using fixation phase
 }
 
 function renderBanner() {
+    document.getElementById('fixation-phase').classList.add('hidden');
     const scenario = scenarios[currentScenario];
     const buttonArea = document.getElementById('button-area');
     

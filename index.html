@@ -35,13 +35,23 @@
 
         .hidden { display: none !important; }
 
-        #fixation-cross {
-            font-size: 80px;
-            color: #333;
+        #fixation-button {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            padding: 8px 16px; 
+            border-radius: 8px;
+            border: 2px solid #333;
+            background: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        #fixation-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
         }
 
         #task-instruction {
@@ -125,7 +135,7 @@
         </div>
 
         <div id="fixation-phase" class="hidden">
-            <div id="fixation-cross">+</div>
+            <button id="fixation-button" onclick="renderBanner()">Next</button>
         </div>
 
         <div id="experiment-phase" class="hidden">
