@@ -331,6 +331,14 @@ const mindsetScenarios = [
     { id: "Safe", instruction: "IMAGINE: You are on your own personal, encrypted computer at home, browsing a site you have trusted for years." }
 ];
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 function buildExperimentFlow() {
     finalScenarioList = baseScenarios.filter(s => s.isStroop);
 
@@ -341,11 +349,12 @@ function buildExperimentFlow() {
             text: mindset.instruction
         });
 
-        const cookieCases = baseScenarios.filter(s => !s.isStroop).map(s => ({
+        let cookieCases = baseScenarios.filter(s => !s.isStroop).map(s => ({
             ...s,
             name: s.name,
             mindsetLabel: mindset.id
         }));
+        cookieCases = shuffleArray(cookieCases);
         finalScenarioList.push(...cookieCases);
     });
 }
