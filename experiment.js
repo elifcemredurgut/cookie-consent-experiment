@@ -1,10 +1,10 @@
 let participantId = "";
 let currentScenario = 0;
 let startTime;
+let finalScenarioList = [];
 
-const scenarios = [
+const baseScenarios = [
     // PART 1: STROOP EFFECT
-    // Case 1: 
     // Case 1: Congruent - Choose red text
     {
         name: "Stroop_1_Congruent",
@@ -27,7 +27,7 @@ const scenarios = [
     },
     // Case 3: Incongruent - Choose red text
     {
-        name: "Stroop_2_Incongruent_Text",
+        name: "Stroop_3_Incongruent_Text",
         isStroop: true,
         instruction: "Select the button where the text says red",
         buttons: [
@@ -37,7 +37,7 @@ const scenarios = [
     },
     // Case 4: Incongruent - Choose red color
     {
-        name: "Stroop_3_Incongruent_Color",
+        name: "Stroop_4_Incongruent_Color",
         isStroop: true,
         instruction: "Select the button with the color red",
         buttons: [
@@ -47,7 +47,7 @@ const scenarios = [
     },
     // Case 5: Incongruent - Choose green color
     {
-        name: "Stroop_4_Incongruent_Color_Green",
+        name: "Stroop_5_Incongruent_Color_Green",
         isStroop: true,
         instruction: "Select the button with the color green",
         buttons: [
@@ -62,6 +62,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Reject All", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
@@ -73,6 +74,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Reject All", class: "link-muted" },
             { id: "accept", text: "Accept All", class: "link-muted" }
@@ -84,6 +86,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Accept Essential", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
@@ -95,6 +98,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Accept Essential", class: "link-muted" },
             { id: "accept", text: "Accept All", class: "link-muted" }
@@ -106,6 +110,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Reject All", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "link-muted" }
@@ -117,6 +122,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "essential", text: "Accept Essential", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "link-muted" }
@@ -128,6 +134,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Reject All", class: "link-muted" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
@@ -139,6 +146,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "essential", text: "Accept Essential", class: "link-muted" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
@@ -151,6 +159,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Reject All", class: "btn-neutral" }
@@ -163,6 +172,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "reject", text: "Reject All", class: "link-muted" },
             { id: "accept", text: "Accept All", class: "link-muted" }
@@ -174,6 +184,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Accept Essential", class: "btn-neutral" }
@@ -185,6 +196,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "link-muted" },
             { id: "reject", text: "Accept Essential", class: "link-muted" }
@@ -196,6 +208,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "link-muted" },
             { id: "reject", text: "Reject All", class: "btn-neutral" }
@@ -207,6 +220,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "link-muted" },
             { id: "essential", text: "Accept Essential", class: "btn-neutral" }
@@ -218,6 +232,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Reject All", class: "link-muted" }
@@ -229,6 +244,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "ButtonLink",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "essential", text: "Accept Essential", class: "link-muted" }
@@ -241,6 +257,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "reject", text: "Reject All", class: "btn-salient" },
             { id: "accept", text: "Accept All", class: "btn-salient" }
@@ -252,6 +269,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "reject", text: "Reject All", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-salient" }
@@ -263,6 +281,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "reject", text: "Reject All", class: "btn-salient" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
@@ -274,6 +293,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-salient" },
             { id: "reject", text: "Reject All", class: "btn-salient" }
@@ -285,6 +305,7 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-salient" },
             { id: "reject", text: "Reject All", class: "btn-neutral" },
@@ -296,13 +317,38 @@ const scenarios = [
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
+        category_name: "SalientNeutral",
         buttons: [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Reject All", class: "btn-salient" },
         ]
     },
-    
 ];
+
+const mindsetScenarios = [
+    { id: "Unsafe", instruction: "IMAGINE: This is your friend's laptop. You are about to log into your BANK account. You are very concerned about privacy and security." },
+    { id: "Neutral", instruction: "IMAGINE: You are browsing a public news website to check the weather. You have no specific concerns." },
+    { id: "Safe", instruction: "IMAGINE: You are on your own personal, encrypted computer at home, browsing a site you have trusted for years." }
+];
+
+function buildExperimentFlow() {
+    finalScenarioList = baseScenarios.filter(s => s.isStroop);
+
+    mindsetScenarios.forEach(mindset => {
+        finalScenarioList.push({
+            name: `Context_${mindset.id}`,
+            isContextPrompt: true,
+            text: mindset.instruction
+        });
+
+        const cookieCases = baseScenarios.filter(s => !s.isStroop).map(s => ({
+            ...s,
+            name: s.name,
+            mindsetLabel: mindset.id
+        }));
+        finalScenarioList.push(...cookieCases);
+    });
+}
 
 function startExperiment() {
     const idInput = document.getElementById('participant-id');
@@ -311,60 +357,79 @@ function startExperiment() {
         return;
     }
     participantId = idInput.value;
+    
+    buildExperimentFlow();
     document.getElementById('setup-phase').classList.add('hidden');
     loadScenario();
 }
 
 function loadScenario() {
+    document.getElementById('context-phase').classList.add('hidden');
     document.getElementById('experiment-phase').classList.add('hidden');
     document.getElementById('fixation-phase').classList.remove('hidden');
-    //renderBanner(); //comment when using fixation phase
 }
 
 function renderBanner() {
     document.getElementById('fixation-phase').classList.add('hidden');
-    const scenario = scenarios[currentScenario];
-    const buttonArea = document.getElementById('button-area');
+    document.getElementById('context-phase').classList.add('hidden');
+    document.getElementById('experiment-phase').classList.add('hidden');
+
+    const scenario = finalScenarioList[currentScenario];
     
-    const instructionEl = document.getElementById('task-instruction');
-    const titleEl = document.getElementById('banner-title');
-    const textEl = document.getElementById('banner-text');
-
-    if (scenario.isStroop) {
-        instructionEl.innerText = scenario.instruction || "";
-        instructionEl.classList.remove('hidden');
-        titleEl.classList.add('hidden');
-        textEl.classList.add('hidden');
+    if (scenario.isContextPrompt) {
+        const contextPhase = document.getElementById('context-phase');
+        document.getElementById('context-instruction').innerText = scenario.text;
+        contextPhase.classList.remove('hidden');
     } else {
-        instructionEl.classList.add('hidden');
-        titleEl.classList.remove('hidden');
-        textEl.classList.remove('hidden');
-        titleEl.innerText = scenario.title || "";
-        textEl.innerText = scenario.text || "";
+        const experimentPhase = document.getElementById('experiment-phase');
+        const buttonArea = document.getElementById('button-area');
+        const instructionEl = document.getElementById('task-instruction');
+        const titleEl = document.getElementById('banner-title');
+        const textEl = document.getElementById('banner-text');
+
+        buttonArea.innerHTML = '';
+
+        if (scenario.isStroop) {
+            instructionEl.innerText = scenario.instruction;
+            instructionEl.classList.remove('hidden');
+            titleEl.classList.add('hidden');
+            textEl.classList.add('hidden');
+        } else {
+            instructionEl.classList.add('hidden');
+            titleEl.classList.remove('hidden');
+            textEl.classList.remove('hidden');
+            titleEl.innerText = scenario.title;
+            textEl.innerText = scenario.text;
+        }
+
+        scenario.buttons.forEach(btn => {
+            const el = document.createElement('button');
+            el.innerText = btn.text;
+            if (btn.class) el.className = btn.class;
+            if (btn.inlineStyle) el.style.cssText += btn.inlineStyle;
+            el.onclick = () => handleChoice(btn.id);
+            buttonArea.appendChild(el);
+        });
+
+        experimentPhase.classList.remove('hidden');
+        startTime = performance.now(); 
     }
+}
 
-    buttonArea.innerHTML = '';    
-    scenario.buttons.forEach(btn => {
-        const el = document.createElement('button');
-        el.innerText = btn.text;
-        
-        if (btn.class) el.className = btn.class;
-        if (btn.inlineStyle) el.style.cssText += btn.inlineStyle;
-
-        el.onclick = () => handleChoice(btn.id);
-        buttonArea.appendChild(el);
-    });
-
-    document.getElementById('experiment-phase').classList.remove('hidden');
-    startTime = performance.now(); 
+function proceedFromContext() {
+    currentScenario++;
+    loadScenario();
 }
 
 async function handleChoice(choice) {
     const reactionTime = performance.now() - startTime;
+    const current = finalScenarioList[currentScenario];
     
     const payload = {
         user_id: participantId,
-        scenario_name: scenarios[currentScenario].name,
+        scenario_name: current.mindsetLabel || "Stroop",
+        category_name: current.category_name || "Stroop",
+        case_name: current.name,
         button_clicked: choice,
         reaction_time_ms: parseFloat(reactionTime.toFixed(2))
     };
@@ -375,13 +440,12 @@ async function handleChoice(choice) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        console.log("Logged:", payload);
     } catch (e) {
-        console.error("Database save failed. Ensure FastAPI backend is running.", e);
+        console.error("Database save failed.", e);
     }
 
     currentScenario++;
-    if (currentScenario < scenarios.length) {
+    if (currentScenario < finalScenarioList.length) {
         loadScenario();
     } else {
         document.getElementById('experiment-phase').classList.add('hidden');

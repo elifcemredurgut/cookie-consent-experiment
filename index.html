@@ -134,6 +134,14 @@
             <button class="btn-salient" onclick="startExperiment()">Start Experiment</button>
         </div>
 
+        <div id="context-phase" class="hidden">
+            <h2>New Scenario Roleplay</h2>
+            <div id="context-box" style="border: 2px solid #555; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p id="context-instruction"></p>
+            </div>
+            <button class="btn-salient" onclick="proceedFromContext()">I understand my role - Continue</button>
+        </div>
+
         <div id="fixation-phase" class="hidden">
             <button id="fixation-button" onclick="renderBanner()">Next</button>
         </div>
