@@ -9,6 +9,9 @@ import os
 
 app = FastAPI()
 
+app.mount("/button", StaticFiles(directory="button"), name="button")
+app.mount("/real", StaticFiles(directory="real"), name="real")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],           # Allows all origins (good for testing)
@@ -31,5 +34,13 @@ def log_click(data: ExperimentData):
 @app.get("/")
 def read_index():
     return FileResponse('index.html')
+
+@app.get("/button_test")
+def read_button():
+    return FileResponse('button/button.html')
+
+@app.get("/real_case")
+def read_real():
+    return FileResponse('real/real.html')
 
 app.mount("/", StaticFiles(directory="."), name="static")

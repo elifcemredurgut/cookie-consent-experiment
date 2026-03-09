@@ -2,165 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thesis Experiment: Stroop & Consent</title>
+    <title>Research Portal</title>
     <style>
-        :root {
-            --primary-blue: #007bff;
-            --neutral-bg: #e9ecef;
-            --text-muted: #6c757d;
+        body { font-family: sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .hub-container { background: white; padding: 50px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; display: flex; gap: 20px; }
+        .nav-card { 
+            width: 250px; padding: 40px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-decoration: none; color: #333;
         }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        #experiment-container {
-            background: white;
-            padding: 50px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 800px;
-            position: relative;
-            min-height: 300px;
-        }
-
-        .hidden { display: none !important; }
-
-        #fixation-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 8px 16px; 
-            border-radius: 8px;
-            border: 2px solid #333;
-            background: white;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        #fixation-button:active {
-            transform: translate(-50%, -50%) scale(0.95);
-        }
-
-        #task-instruction {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-blue);
-            margin-bottom: 40px;
-        }
-
-        #banner-title { margin-bottom: 10px; }
-        #banner-text { margin-bottom: 40px; color: #555; }
-
-        .button-group { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            gap: 150px;
-        }
-
-        .btn-stroop {
-            background: transparent;
-            border: none;
-            padding: 30px 60px;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .btn-salient { 
-            background: var(--primary-blue); 
-            color: white; 
-            border: none; 
-            padding: 12px 28px; 
-            border-radius: 6px; 
-            font-size: 16px;
-            font-weight: bold; 
-            cursor: pointer; 
-        }
-
-        .btn-neutral {
-            background: var(--neutral-bg);
-            color: #333;
-            border: 1px solid #ccc;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .link-muted {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            text-decoration: underline;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 12px 28px;
-        }
-
-        input[type="text"] {
-            padding: 12px;
-            font-size: 16px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
+        .nav-card:hover { border-color: #007bff; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .nav-card h2 { color: #007bff; }
     </style>
 </head>
 <body>
-
-    <div id="experiment-container">
-        
-        <div id="setup-phase">
-            <h2>Research Study</h2>
-            <p>Please enter your Participant ID to begin.</p>
-            <input type="text" id="participant-id" placeholder="e.g. P001">
-            <br>
-            <button class="btn-salient" onclick="startExperiment()">Start Experiment</button>
-        </div>
-
-        <div id="context-phase" class="hidden">
-            <h2>New Scenario Roleplay</h2>
-            <div id="context-box" style="border: 2px solid #555; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p id="context-instruction"></p>
-            </div>
-            <button class="btn-salient" onclick="proceedFromContext()">I understand my role - Continue</button>
-        </div>
-
-        <div id="fixation-phase" class="hidden">
-            <button id="fixation-button" onclick="renderBanner()">Next</button>
-        </div>
-
-        <div id="experiment-phase" class="hidden">
-            <div id="task-instruction"></div>
-            
-            <h2 id="banner-title" class="hidden"></h2>
-            <p id="banner-text" class="hidden"></p>
-            
-            <div id="button-area" class="button-group"></div>
-        </div>
-
-        <div id="completion-phase" class="hidden">
-            <h2>Experiment Complete</h2>
-            <p>Your responses have been securely recorded. Thank you!</p>
-        </div>
+    <div class="hub-container">
+        <a href="/button_test" class="nav-card">
+            <h2>Start Test</h2>
+            <p>Participant ID, Stroop Test, and Cookie Scenarios.</p>
+        </a>
+        <a href="/real-case" class="nav-card">
+            <h2>Real Case</h2>
+            <p>View the live implementation examples.</p>
+        </a>
     </div>
-
-    <script src="experiment.js"></script>
 </body>
 </html>

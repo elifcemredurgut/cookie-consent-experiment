@@ -457,7 +457,10 @@ async function handleChoice(choice) {
     if (currentScenario < finalScenarioList.length) {
         loadScenario();
     } else {
-        document.getElementById('experiment-phase').classList.add('hidden');
-        document.getElementById('completion-phase').classList.remove('hidden');
+        document.getElementById('experiment-phase').classList.add('hidden');        
+        const completionPhase = document.getElementById('completion-phase');
+        completionPhase.classList.remove('hidden');
+        
+        console.log("Experiment finished. Showing completion screen.");
     }
 }
