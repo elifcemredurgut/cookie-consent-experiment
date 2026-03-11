@@ -31,11 +31,10 @@
         .btn-checkout { width: 100%; padding: 16px; background: #026cdf; color: white; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .btn-checkout:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #1f2937; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); }
         .cookie-content { max-width: 60%; font-size: 0.9em; line-height: 1.4; }
         .cookie-btns button { padding: 10px 20px; margin-left: 10px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; }
         .btn-accept { background: #10b981; color: white; }
-        .btn-settings { background: #4b5563; color: white; }
+        .btn-reject { background: #4b5563; color: white; }
         .hidden { display: none !important; }
 
         .form-group { margin-bottom: 15px; }
@@ -76,6 +75,65 @@
 
         .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
         .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
+        /* Base container - shared by both cases */
+        #cookie-banner {
+            position: fixed;
+            z-index: 9999;
+            background: #1f2937;
+            color: white;
+            padding: 25px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            display: flex;
+            box-sizing: border-box;
+        }
+
+        /* Case 1: Centered Modal */
+        .type-modal {
+            flex-direction: column;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            max-width: 90vw;
+            border-radius: 12px;
+        }
+        .type-modal .cookie-content {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .type-modal .cookie-btns {
+            justify-content: flex-end; /* Buttons to the right */
+        }
+
+        /* Case 2: Bottom Banner */
+        .type-banner {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            flex-direction: row; /* Side-by-side layout */
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0;
+            padding: 20px 50px;
+        }
+        .type-banner .cookie-content {
+            text-align: left;
+            width: auto;
+            max-width: 70%;
+            margin-bottom: 0;
+        }
+        .type-banner .cookie-btns {
+            justify-content: flex-end;
+            width: auto;
+        }
+
+        /* Universal Button Row */
+        .cookie-btns {
+            display: flex;
+            gap: 12px;
+        }
     </style>
 </head>
 <body>
@@ -166,16 +224,16 @@
     <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
     <p>Your tickets have been reserved.</p>
     <p>Check your email box and phone (SMS) for the digital QR codes and payment receipts.</p>
-    <button class="btn-settings" onclick="location.reload()" style="margin-top: 40px; background: #026cdf;">CONTINUE</button>
+    <button class="btn-reject" onclick="location.reload()" style="background: #026cdf;">CONTINUE</button>
 </div>
-
-<div id="cookie-banner">
+<div id="modal-backdrop" class="hidden"></div>
+<div id="cookie-banner" class="hidden">
     <div class="cookie-content">
-        <strong>Privacy Preferences</strong><br>
-        We and our partners use cookies to process personal data like browsing patterns. Click "Accept" to allow this or "Manage" to customize your settings.
+        <h2 style="margin-top: 0; font-size: 1.4em;">Privacy Preferences</h2>
+        <p>We and our partners use cookies to process personal data like browsing patterns. Click "Accept" to allow this or "Reject all" to customize your settings.</p>
     </div>
     <div class="cookie-btns">
-        <button class="btn-settings" onclick="logCookie('Reject All')">Reject All</button>
+        <button class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
         <button class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
     </div>
 </div>

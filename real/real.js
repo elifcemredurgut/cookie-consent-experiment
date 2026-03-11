@@ -3,6 +3,12 @@ const USER_ID = "45";
 let selectedSeats = [];
 let experimentStartTime = null;
 
+const ACTIVE_CONFIG = {
+    //case: 'MODAL', 
+    case: 'BANNER', 
+    category: 'Intrusive'
+};
+
 function init() {
     setupGrid('grid-floor', 36, 0.15);
     setupGrid('grid-bowl', 72, 0.45);
@@ -73,18 +79,33 @@ function startTimer(duration) {
 function startMission() {
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
+    
+    const banner = document.getElementById('cookie-banner');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    if (ACTIVE_CONFIG.case === 'MODAL') {
+        banner.className = 'type-modal';
+        backdrop.classList.remove('hidden');
+    } else {
+        banner.className = 'type-banner';
+        backdrop.classList.add('hidden');
+    }
+
     startTimer(300);
 }
 
 async function logCookie(action) {
     const reactionTime = Date.now() - (experimentStartTime || Date.now());
+    
+    // Hide both banner and backdrop
     document.getElementById('cookie-banner').classList.add('hidden');
+    document.getElementById('modal-backdrop').classList.add('hidden');
 
     const payload = {
         user_id: USER_ID,
         scenario_name: "Ticket Stress Scenario",
-        category_name: "Bottom Banner",
-        case_name: "Real Stadium Layout",
+        category_name: ACTIVE_CONFIG.category,
+        case_name: ACTIVE_CONFIG.case,
         button_clicked: action,
         reaction_time_ms: reactionTime
     };
