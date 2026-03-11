@@ -67,7 +67,7 @@ const baseScenarios = [
             { id: "reject", text: "Reject All", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
         ]
-    },
+    },/*
     // Case 2: Link: Reject | Link: Accept
     {
         name: "Cookie_2_LinkReject_LinkAccept",
@@ -322,13 +322,14 @@ const baseScenarios = [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Reject All", class: "btn-salient" },
         ]
-    },
+    },*/
 ];
 
 const mindsetScenarios = [
-    { id: "Unsafe", instruction: "IMAGINE: This is your friend's laptop. You are about to log into your BANK account. You are very concerned about privacy and security." },
-    { id: "Neutral", instruction: "IMAGINE: You are browsing a public news website to check the weather. You have no specific concerns." },
-    { id: "Safe", instruction: "IMAGINE: You are on your own personal, encrypted computer at home, browsing a site you have trusted for years." }
+    { id: "unsafe_no_pressure", instruction: "Imagine that you are at Aalto University library and using a public computer found in the library. You need to log in to your bank account to make a money transfer. Tonight is the deadline to make the transfer but you do not have time pressure." },
+    { id: "neutral", instruction: "Imagine that you are at home on a Sunday morning using your personal laptop. You are browsing a local news website to check the weekend weather forecast and read a few headlines. You have no specific time pressure" },
+    { id: "unsafe_pressure", instruction: "Imagine that you are on your own personal laptop at home. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but your friend has just found a website \
+        which sells extra tickets with the same price. You just want to finish the transaction before the tickets sell out." }
 ];
 
 function shuffleArray(array) {
@@ -337,6 +338,37 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+let countdownInterval;
+
+function startTimer(durationSeconds) {
+    clearInterval(countdownInterval);
+    let timer = durationSeconds;
+    const display = document.getElementById('time-left');
+    const timerDiv = document.getElementById('timer-display');
+    
+    timerDiv.classList.remove('hidden');
+
+    countdownInterval = setInterval(() => {
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            display.textContent = "00:00";
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(countdownInterval);
+    document.getElementById('timer-display').classList.add('hidden');
 }
 
 function buildExperimentFlow() {
@@ -384,6 +416,12 @@ function renderBanner() {
     document.getElementById('experiment-phase').classList.add('hidden');
 
     const scenario = finalScenarioList[currentScenario];
+
+    if (scenario.mindsetLabel === "unsafe_pressure" && !scenario.isContextPrompt) {
+        startTimer(120);
+    } else {
+        stopTimer();
+    }
     
     if (scenario.isContextPrompt) {
         const contextPhase = document.getElementById('context-phase');
