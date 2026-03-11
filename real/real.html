@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Farewell Tour Tickets</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f0f2f5; color: #333; }
+        .nav { background: #1f2937; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; }
+        .timer-box { background: #ef4444; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 1.1em; }
+        
+        .main-layout { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; padding: 0 20px; }
+        
+        .map-card { flex: 2; background: white; padding: 30px; border-radius: 8px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stage { background: #333; color: #888; text-align: center; padding: 20px; margin: 0 auto 50px auto; width: 60%; border-radius: 0 0 80px 80px; font-weight: bold; letter-spacing: 5px; }
+        
+        .section-container { margin-bottom: 40px; }
+        .section-title { font-size: 0.9em; font-weight: bold; color: #666; margin-bottom: 10px; border-left: 4px solid #026cdf; padding-left: 10px; }
+        .seat-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; justify-items: center; }
+        
+        .seat { width: 18px; height: 18px; border-radius: 3px; cursor: pointer; transition: transform 0.1s; }
+        .seat.available { background: #026cdf; border: 1px solid #014da1; }
+        .seat.sold { background: #e5e7eb; cursor: not-allowed; }
+        .seat.selected { background: #10b981; transform: scale(1.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        .seat:hover:not(.sold) { opacity: 0.8; }
+
+        .sidebar { flex: 1; background: white; padding: 25px; border-radius: 8px; height: fit-content; position: sticky; top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .order-row { display: flex; justify-content: space-between; margin: 15px 0; font-size: 0.95em; }
+        .total-price { font-size: 1.5em; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px; margin-top: 15px; }
+        
+        .btn-checkout { width: 100%; padding: 16px; background: #026cdf; color: white; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-checkout:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #1f2937; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); }
+        .cookie-content { max-width: 60%; font-size: 0.9em; line-height: 1.4; }
+        .cookie-btns button { padding: 10px 20px; margin-left: 10px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; }
+        .btn-accept { background: #10b981; color: white; }
+        .btn-settings { background: #4b5563; color: white; }
+        .hidden { display: none !important; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85em; font-weight: bold; margin-bottom: 5px; color: #4b5563; }
+        .form-group input { 
+            width: 100%; padding: 12px; border: 1px solid #d1d5db; 
+            border-radius: 6px; box-sizing: border-box; font-size: 1em; 
+        }
+        .form-group input:focus { outline: none; border-color: #026cdf; ring: 2px #026cdf; }
+        #mission-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .mission-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .mission-card h2 { color: #ef4444; margin-top: 0; }
+
+        .mission-goals {
+            text-align: left;
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
+        .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <div style="font-size: 1.5em; font-weight: bold;">TicketFast</div>
+    <div class="timer-box">Time Left: <span id="clock">05:00</span></div>
+</div>
+
+<div id="mission-overlay">
+    <div class="mission-card">
+        <h2>SCENARIO 1</h2>
+        <p>Imagine that you are on your own personal laptop at home. You have been waiting months to buy tickets for your <strong>favorite band’s farewell tour</strong>. The tickets are sold out on TicketMaster but your friend has just found a website
+        which sells extra tickets with the same price.</p>
+        <div class="mission-goals">
+            <ul>
+                <li>Select 2 seats for you and your friend quickly.</li>
+                <li>Complete the checkout before the 5-minute timer expires.</li>
+            </ul>
+        </div>
+        <button class="btn-checkout" onclick="startMission()">START MISSION</button>
+    </div>
+</div>
+
+<div class="main-layout" id="selection-screen">
+    <div class="map-card">
+        <div class="stage">STAGE</div>
+        
+        <div class="section-container">
+            <div class="section-title">FRONT FLOOR</div>
+            <div id="grid-floor" class="seat-grid"></div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">UPPER FLOOR</div>
+            <div id="grid-bowl" class="seat-grid"></div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3>Your Tickets</h3>
+        <div id="ticket-list">
+            <p style="color: #999;">Select seats to continue</p>
+        </div>
+        <div class="total-price">
+            Total: <span id="display-total">$0.00</span>
+        </div>
+        <button id="main-buy-btn" class="btn-checkout" onclick="showCheckoutForm()" disabled>
+            Purchase Tickets
+        </button>
+        <p style="font-size: 0.8em; color: #666; margin-top: 15px; text-align: center;">*Additional fees calculated at next step</p>
+    </div>
+</div>
+
+<div class="main-layout hidden" id="checkout-screen">
+    <div class="map-card">
+        <h2>Contact & Payment Information</h2>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="form-email" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="form-phone" placeholder="+358 40 000 0000">
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <div class="form-group">
+            <label>Credit Card Number</label>
+            <input type="text" id="card-num" placeholder="0000 0000 0000 0000">
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 2;">
+                <label>Expiry Date</label>
+                <input type="text" placeholder="MM/YY">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>CVC</label>
+                <input type="text" placeholder="123">
+            </div>
+        </div>
+        <button id="confirm-pay-btn" class="btn-checkout" onclick="completePurchase()">
+            Confirm & Pay
+        </button>
+    </div>
+</div>
+
+<div id="success-screen" class="hidden" style="text-align: center; margin-top: 100px;">
+    <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
+    <p>Your tickets have been reserved.</p>
+    <p>Check your email box and phone (SMS) for the digital QR codes and payment receipts.</p>
+    <button class="btn-settings" onclick="location.reload()" style="margin-top: 40px; background: #026cdf;">CONTINUE</button>
+</div>
+
+<div id="cookie-banner">
+    <div class="cookie-content">
+        <strong>Privacy Preferences</strong><br>
+        We and our partners use cookies to process personal data like browsing patterns. Click "Accept" to allow this or "Manage" to customize your settings.
+    </div>
+    <div class="cookie-btns">
+        <button class="btn-settings" onclick="logCookie('Reject All')">Reject All</button>
+        <button class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
+    </div>
+</div>
+
+<script src="real/real.js"></script>
+</body>
+</html>
