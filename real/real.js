@@ -2,13 +2,17 @@ const PRICE_PER_TICKET = 149.99;
 const USER_ID = "45";
 let selectedSeats = [];
 let experimentStartTime = null;
+let timerInterval = null;
 
-const ACTIVE_CONFIG = {
-    case: 'CUSTOMIZE', 
-    //case: 'MODAL', 
-    //case: 'BANNER', 
-    category: 'Intrusive'
-};
+const CASES = ['BANNER', 'MODAL', 'CUSTOMIZE'];
+let currentCaseIndex = 0;
+
+function getActiveConfig() {
+    return {
+        case: CASES[currentCaseIndex],
+        category: 'Intrusive'
+    };
+}
 
 function init() {
     setupGrid('grid-floor', 36, 0.15);
@@ -62,16 +66,19 @@ function updateUI() {
 }
 
 function startTimer(duration) {
+    if (timerInterval) clearInterval(timerInterval);
+    
     let timer = duration;
     const display = document.getElementById('clock');
-    const interval = setInterval(() => {
+    
+    timerInterval = setInterval(() => {
         let mins = Math.floor(timer / 60);
         let secs = timer % 60;
         if (display) {
             display.innerText = `${mins}:${secs < 10 ? '0' + secs : secs}`;
         }
         if (--timer < 0) {
-            clearInterval(interval);
+            clearInterval(timerInterval);
             if (display) display.innerText = "EXPIRED";
         }
     }, 1000);
@@ -85,14 +92,15 @@ function startMission() {
     const backdrop = document.getElementById('modal-backdrop');
     const rejectBtn = document.getElementById('btn-reject-option');
     const customizeBtn = document.getElementById('btn-customize-option');
+    const config = getActiveConfig();
     banner.classList.remove('hidden');
 
-    if (ACTIVE_CONFIG.case === 'CUSTOMIZE') {
+    if (config.case === 'CUSTOMIZE') {
         rejectBtn.classList.add('hidden');
         customizeBtn.classList.remove('hidden');
         banner.className = 'type-modal';
         backdrop.classList.remove('hidden');
-    } else if (ACTIVE_CONFIG.case === 'MODAL') {
+    } else if (config.case === 'MODAL') {
         rejectBtn.classList.remove('hidden');
         customizeBtn.classList.add('hidden');
         banner.className = 'type-modal';
@@ -119,7 +127,7 @@ function closeCustomize() {
 
 async function logCookie(action) {
     const reactionTime = Date.now() - (experimentStartTime || Date.now());
-    
+    const config = getActiveConfig();
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.add('hidden');
     document.getElementById('modal-backdrop').classList.add('hidden');
@@ -127,8 +135,8 @@ async function logCookie(action) {
     const payload = {
         user_id: USER_ID,
         scenario_name: "Ticket Stress Scenario",
-        category_name: ACTIVE_CONFIG.category,
-        case_name: ACTIVE_CONFIG.case,
+        category_name: config.category,
+        case_name: config.case,
         button_clicked: action,
         reaction_time_ms: reactionTime
     };
@@ -177,6 +185,30 @@ async function completePurchase() {
     if (timerBox) {
         timerBox.style.background = "#10b981";
         timerBox.innerText = "Transaction Complete";
+    }
+}
+
+function nextScenario() {
+    currentCaseIndex++;
+    
+    if (currentCaseIndex < CASES.length) {
+        selectedSeats = [];        
+        document.getElementById('grid-floor').innerHTML = '';
+        document.getElementById('grid-bowl').innerHTML = '';
+        init(); 
+
+        document.getElementById('success-screen').classList.add('hidden');
+        document.getElementById('selection-screen').classList.remove('hidden');
+        document.getElementById('mission-overlay').classList.remove('hidden');
+        
+        const timerBox = document.querySelector('.timer-box');
+        timerBox.style.background = "#ef4444";
+        timerBox.innerHTML = 'Time Left: <span id="clock">05:00</span>';        
+        document.querySelector('.mission-card h2').innerText = `SCENARIO ${currentCaseIndex + 1}`;
+        
+        updateUI();
+    } else {
+        window.location.href = '/';
     }
 }
 
