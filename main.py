@@ -10,7 +10,9 @@ import os
 app = FastAPI()
 
 app.mount("/button", StaticFiles(directory="button"), name="button")
-app.mount("/real", StaticFiles(directory="real"), name="real")
+app.mount("/ticket", StaticFiles(directory="ticket"), name="ticket")
+app.mount("/bank", StaticFiles(directory="bank"), name="bank")
+app.mount("/hobby", StaticFiles(directory="hobby"), name="hobby")
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,8 +41,8 @@ def read_index():
 def read_button():
     return FileResponse('button/button.html')
 
-@app.get("/real_case")
-def read_real():
-    return FileResponse('real/real.html')
+@app.get("/ticket")
+def read_ticket():
+    return FileResponse('ticket/ticket.html')
 
 app.mount("/", StaticFiles(directory="."), name="static")
