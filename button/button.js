@@ -1,7 +1,16 @@
-let participantId = "";
 let currentScenario = 0;
 let startTime;
 let finalScenarioList = [];
+
+function getParticipantId() {
+    let id = localStorage.getItem('participant_id');
+    if (!id) {
+        id = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        localStorage.setItem('participant_id', id);
+    }
+    return id;
+}
+const USER_ID = getParticipantId();
 
 const baseScenarios = [
     // PART 1: STROOP EFFECT
@@ -391,16 +400,8 @@ function buildExperimentFlow() {
     });
 }
 
-function startExperiment() {
-    const idInput = document.getElementById('participant-id');
-    if (idInput.value.trim() === "") {
-        alert("Please enter a Participant ID.");
-        return;
-    }
-    participantId = idInput.value;
-    
+function startExperiment() {    
     buildExperimentFlow();
-    document.getElementById('setup-phase').classList.add('hidden');
     loadScenario();
 }
 
@@ -473,7 +474,7 @@ async function handleChoice(choice) {
     const current = finalScenarioList[currentScenario];
     
     const payload = {
-        user_id: participantId,
+        user_id: USER_ID,
         scenario_name: current.mindsetLabel || "Stroop",
         category_name: current.category_name || "Stroop",
         case_name: current.name,
@@ -502,3 +503,5 @@ async function handleChoice(choice) {
         console.log("Experiment finished. Showing completion screen.");
     }
 }
+
+window.onload = startExperiment;

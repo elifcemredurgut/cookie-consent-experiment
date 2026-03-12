@@ -1,11 +1,19 @@
 const PRICE_PER_TICKET = 149.99;
-const USER_ID = "45";
 let selectedSeats = [];
 let experimentStartTime = null;
 let timerInterval = null;
-
 const CASES = ['BANNER', 'MODAL', 'CUSTOMIZE'];
 let currentCaseIndex = 0;
+
+function getParticipantId() {
+    let id = localStorage.getItem('participant_id');
+    if (!id) {
+        id = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        localStorage.setItem('participant_id', id);
+    }
+    return id;
+}
+const USER_ID = getParticipantId();
 
 function getActiveConfig() {
     return {
