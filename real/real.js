@@ -4,8 +4,9 @@ let selectedSeats = [];
 let experimentStartTime = null;
 
 const ACTIVE_CONFIG = {
+    case: 'CUSTOMIZE', 
     //case: 'MODAL', 
-    case: 'BANNER', 
+    //case: 'BANNER', 
     category: 'Intrusive'
 };
 
@@ -82,11 +83,23 @@ function startMission() {
     
     const banner = document.getElementById('cookie-banner');
     const backdrop = document.getElementById('modal-backdrop');
+    const rejectBtn = document.getElementById('btn-reject-option');
+    const customizeBtn = document.getElementById('btn-customize-option');
+    banner.classList.remove('hidden');
 
-    if (ACTIVE_CONFIG.case === 'MODAL') {
+    if (ACTIVE_CONFIG.case === 'CUSTOMIZE') {
+        rejectBtn.classList.add('hidden');
+        customizeBtn.classList.remove('hidden');
+        banner.className = 'type-modal';
+        backdrop.classList.remove('hidden');
+    } else if (ACTIVE_CONFIG.case === 'MODAL') {
+        rejectBtn.classList.remove('hidden');
+        customizeBtn.classList.add('hidden');
         banner.className = 'type-modal';
         backdrop.classList.remove('hidden');
     } else {
+        rejectBtn.classList.remove('hidden');
+        customizeBtn.classList.add('hidden');
         banner.className = 'type-banner';
         backdrop.classList.add('hidden');
     }
@@ -94,11 +107,21 @@ function startMission() {
     startTimer(300);
 }
 
+function openCustomize() {
+    document.getElementById('cookie-banner').classList.add('hidden');
+    document.getElementById('customize-modal').classList.remove('hidden');
+}
+
+function closeCustomize() {
+    document.getElementById('customize-modal').classList.add('hidden');
+    document.getElementById('cookie-banner').classList.remove('hidden');
+}
+
 async function logCookie(action) {
     const reactionTime = Date.now() - (experimentStartTime || Date.now());
     
-    // Hide both banner and backdrop
     document.getElementById('cookie-banner').classList.add('hidden');
+    document.getElementById('customize-modal').classList.add('hidden');
     document.getElementById('modal-backdrop').classList.add('hidden');
 
     const payload = {

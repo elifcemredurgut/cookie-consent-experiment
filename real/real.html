@@ -35,6 +35,15 @@
         .cookie-btns button { padding: 10px 20px; margin-left: 10px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; }
         .btn-accept { background: #10b981; color: white; }
         .btn-reject { background: #4b5563; color: white; }
+                .btn-confirm {
+            background: #026cdf;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: bold;
+            cursor: pointer;
+        }
         .hidden { display: none !important; }
 
         .form-group { margin-bottom: 15px; }
@@ -75,35 +84,51 @@
 
         .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
         .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
-        /* Base container - shared by both cases */
+        /* Base container */
         #cookie-banner {
             position: fixed;
             z-index: 9999;
             background: #1f2937;
             color: white;
-            padding: 25px;
+            padding: 35px; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
             display: flex;
+            flex-direction: column;
             box-sizing: border-box;
         }
 
         /* Case 1: Centered Modal */
         .type-modal {
-            flex-direction: column;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            max-width: 90vw;
-            border-radius: 12px;
+            width: 550px; 
+            max-width: 95vw;
+            border-radius: 16px;
+            /* align-items: center;  <-- REMOVE THIS to let children fill the width */
         }
+
         .type-modal .cookie-content {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
+            width: 100%;             /* Ensure it takes full 550px width */
+            text-align: center;      /* Center the text within that width */
+            margin-bottom: 25px;
+            display: block;
         }
+
+        .type-modal .cookie-content h2,
+        .type-modal .cookie-content p {
+            margin: 0;               /* Remove default margins that might push text */
+            padding: 0;
+            width: 100%;
+            text-align: center;      /* Center the lines of text */
+        }
+
         .type-modal .cookie-btns {
-            justify-content: flex-end; /* Buttons to the right */
+            display: flex;
+            width: 100%;
+            justify-content: flex-end; 
+            gap: 15px;
+            margin-top: 10px;
         }
 
         /* Case 2: Bottom Banner */
@@ -112,7 +137,7 @@
             left: 0;
             right: 0;
             width: 100%;
-            flex-direction: row; /* Side-by-side layout */
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
             border-radius: 0;
@@ -129,10 +154,111 @@
             width: auto;
         }
 
-        /* Universal Button Row */
         .cookie-btns {
             display: flex;
             gap: 12px;
+        }
+        #customize-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; max-width: 95vw; height: 85vh;
+            background: #1f2937; /* Dark navy background */
+            color: white; 
+            z-index: 10001; border-radius: 16px;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .customize-header { 
+            padding: 15px 25px; 
+            border-bottom: 1px solid #374151; 
+            display: flex; align-items: center; gap: 15px; 
+            font-weight: bold;
+            background: #1f2937;
+        }
+
+        .back-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; color: white; }
+
+        .customize-body { padding: 25px; overflow-y: auto; flex-grow: 1; background: #1f2937; }
+        .customize-footer { 
+            padding: 20px; 
+            border-top: 1px solid #374151; 
+            display: flex; justify-content: center; gap: 15px; 
+            background: #1f2937; 
+        }
+        .toggle-card { 
+            border: 1px solid #374151; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            background: #2d3748; /* Slightly lighter gray for contrast */
+        }
+        .toggle-header strong { color: white; }
+        .toggle-header p { color: #9ca3af; } /* Dimmed text for descriptions */
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-top: 1px solid #4a5568;
+            color: #e2e8f0;
+        }
+        .info-icon {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-left: 5px;
+            cursor: help;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #9ca3af;
+            transition: .3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        #customize-modal .btn-accept {
+            border-radius: 50px;
+            padding: 12px 30px;
+        }
+        #modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9998;
+            pointer-events: all;
+        }
+        #cookie-banner, #customize-modal {
+            z-index: 9999 !important;
         }
     </style>
 </head>
@@ -233,9 +359,167 @@
         <p>We and our partners use cookies to process personal data like browsing patterns. Click "Accept" to allow this or "Reject all" to customize your settings.</p>
     </div>
     <div class="cookie-btns">
-        <button class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
-        <button class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
+        <button id="btn-reject-option" class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
+        <button id="btn-customize-option" class="btn-settings hidden" onclick="openCustomize()">Customize</button>
+        <button id="btn-accept-option" class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
     </div>
+</div>
+<div id="customize-modal" class="hidden">
+    <div class="customize-header">
+        <button class="back-btn" onclick="closeCustomize()">←</button>
+        <span>Data preferences</span>
+    </div>
+    <div class="customize-body">
+        <h2>Manage your data</h2>
+        <p>You can choose how your personal data is used. Vendors want your permission to do the following:</p>
+        
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Store and/or access information on a device</strong>
+                <p>Cookies, device or similar online identifiers (e.g. login-based identifiers, randomly assigned identifiers, network based identifiers) together with other information (e.g. browser type and information, language, screen size, supported technologies etc.) can be stored or read on your device to recognise it each time it connects to an app or to a website, for one or several of the purposes presented here.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (125 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Use limited data to select advertising</strong>
+                <p>Advertising presented to you on this service can be based on limited data, such as the website or app you are using, your non-precise location, your device type or which content you are (or have been) interacting with </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (76 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (34 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Create profiles for personalised advertising</strong>
+                <p>Information about your activity on this service (such as forms you submit, content you look at) can be stored and combined with other information about you (for example, information from your previous activity on this service and other websites or apps) or similar users. This is then used to build or improve a profile about you (that might include possible interests and personal aspects). Your profile can be used (also later) to present advertising that appears more relevant based on your possible interests by this and other entities.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (125 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Measure advertising performance</strong>
+                <p>Information regarding which advertising is presented to you and how you interact with it can be used to determine how well an advert has worked for you or other users and whether the goals of the advertising were reached. For instance, whether you saw an ad, whether you clicked on it, whether it led you to buy a product or visit a website, etc. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (81 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Measure content performance</strong>
+                <p>Information regarding which content is presented to you and how you interact with it can be used to determine whether the (non-advertising) content e.g. reached its intended audience and matched your interests. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (81 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Develop and improve services</strong>
+                <p>Information about your activity on this service, such as your interaction with ads or content, can be very helpful to improve products and services and to build new products and services based on user interactions, the type of audience, etc. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (73 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (38 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Use precise geolocation data</strong>
+                <p>With your acceptance, your precise location (within a radius of less than 500 metres) may be used in support of the purposes explained in this notice.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Ensure security, prevent and detect fraud, and fix errors</strong>
+                <p>Your data can be used to monitor for and prevent unusual and possibly fraudulent activity (for example, regarding advertising, ad clicks by bots), and ensure systems and processes work properly and securely. </p>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Match and combine data from other data sources</strong>
+                <p>Information about your activity on this service may be matched and combined with other information relating to you and originating from various sources (for instance your activity on a separate online service, your use of a loyalty card in-store, or your answers to a survey), in support of the purposes explained in this notice.</p>
+            </div>
+        </div>
+        </div>
+        <div class="customize-footer">
+            <button class="btn-accept" onclick="logCookie('Custom - Accept All')">Accept all</button>
+            <button class="btn-confirm" onclick="logCookie('Custom - Confirm Choices')">Confirm choices</button>
+        </div>
 </div>
 
 <script src="real/real.js"></script>
