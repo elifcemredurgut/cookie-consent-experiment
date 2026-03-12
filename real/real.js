@@ -18,7 +18,7 @@ const USER_ID = getParticipantId();
 function getActiveConfig() {
     return {
         case: CASES[currentCaseIndex],
-        category: 'Intrusive'
+        category: 'Cookie'
     };
 }
 
@@ -142,7 +142,7 @@ async function logCookie(action) {
 
     const payload = {
         user_id: USER_ID,
-        scenario_name: "Ticket Stress Scenario",
+        scenario_name: "concert_ticket_pressure",
         category_name: config.category,
         case_name: config.case,
         button_clicked: action,
@@ -171,7 +171,7 @@ async function completePurchase() {
         user_id: USER_ID,
         scenario_name: "Ticket Stress Scenario",
         category_name: "Checkout",
-        case_name: "Final Purchase",
+        case_name: CASES[currentCaseIndex],
         button_clicked: "Confirm & Pay",
         reaction_time_ms: Date.now() - (experimentStartTime || Date.now())
     };
