@@ -2,8 +2,17 @@ const PRICE_PER_TICKET = 149.99;
 let selectedSeats = [];
 let experimentStartTime = null;
 let timerInterval = null;
-const CASES = ['BANNER', 'MODAL', 'CUSTOMIZE'];
 let currentCaseIndex = 0;
+const CASES = [
+    'banner_reject_accept', 
+    'banner_accept_reject', 
+    'banner_customize_accept', 
+    'banner_accept_customize',
+    'modal_reject_accept', 
+    'modal_accept_reject', 
+    'modal_customize_accept', 
+    'modal_accept_customize'
+];
 
 function getParticipantId() {
     let id = localStorage.getItem('participant_id');
@@ -98,27 +107,42 @@ function startMission() {
     
     const banner = document.getElementById('cookie-banner');
     const backdrop = document.getElementById('modal-backdrop');
-    const rejectBtn = document.getElementById('btn-reject-option');
-    const customizeBtn = document.getElementById('btn-customize-option');
+    const btnContainer = document.querySelector('.cookie-btns');
     const config = getActiveConfig();
+    const [displayType, leftBtnType, rightBtnType] = config.case.split('_');
+
     banner.classList.remove('hidden');
 
-    if (config.case === 'CUSTOMIZE') {
-        rejectBtn.classList.add('hidden');
-        customizeBtn.classList.remove('hidden');
-        banner.className = 'type-modal';
-        backdrop.classList.remove('hidden');
-    } else if (config.case === 'MODAL') {
-        rejectBtn.classList.remove('hidden');
-        customizeBtn.classList.add('hidden');
+    if (displayType === 'modal') {
         banner.className = 'type-modal';
         backdrop.classList.remove('hidden');
     } else {
-        rejectBtn.classList.remove('hidden');
-        customizeBtn.classList.add('hidden');
         banner.className = 'type-banner';
         backdrop.classList.add('hidden');
     }
+
+    btnContainer.innerHTML = '';
+
+    function createButton(type) {
+        const btn = document.createElement('button');
+        if (type === 'reject') {
+            btn.className = 'btn-reject';
+            btn.innerText = 'Reject All';
+            btn.onclick = () => logCookie('Reject All');
+        } else if (type === 'accept') {
+            btn.className = 'btn-accept';
+            btn.innerText = 'Accept All';
+            btn.onclick = () => logCookie('Accept All');
+        } else if (type === 'customize') {
+            btn.className = 'btn-reject';
+            btn.innerText = 'Customize';
+            btn.onclick = openCustomize;
+        }
+        return btn;
+    }
+
+    btnContainer.appendChild(createButton(leftBtnType));
+    btnContainer.appendChild(createButton(rightBtnType));
 
     startTimer(300);
 }

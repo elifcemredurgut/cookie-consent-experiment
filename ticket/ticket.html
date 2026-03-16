@@ -40,7 +40,7 @@
             color: white;
             border: none;
             padding: 12px 30px;
-            border-radius: 50px; /* Pill shape */
+            border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -90,7 +90,7 @@
             z-index: 9999;
             background: #1f2937;
             color: white;
-            padding: 35px; 
+            padding: 15px 20px; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
@@ -105,22 +105,21 @@
             width: 550px; 
             max-width: 95vw;
             border-radius: 16px;
-            /* align-items: center;  <-- REMOVE THIS to let children fill the width */
         }
 
         .type-modal .cookie-content {
-            width: 100%;             /* Ensure it takes full 550px width */
-            text-align: center;      /* Center the text within that width */
+            width: 100%;
+            text-align: center;
             margin-bottom: 25px;
             display: block;
         }
 
         .type-modal .cookie-content h2,
         .type-modal .cookie-content p {
-            margin: 0;               /* Remove default margins that might push text */
+            margin: 0;
             padding: 0;
             width: 100%;
-            text-align: center;      /* Center the lines of text */
+            text-align: center;
         }
 
         .type-modal .cookie-btns {
