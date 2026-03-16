@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickConvert | Online Unit Converter</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
+        
+        .header { background: #3b82f6; color: white; padding: 20px 50px; font-size: 1.5em; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        .container { max-width: 800px; margin: 50px auto; padding: 0 20px; }
+        .converter-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .converter-card h1 { margin-top: 0; color: #3b82f6; font-size: 1.8em; margin-bottom: 30px; }
+        
+        .input-group { display: flex; gap: 20px; margin-bottom: 25px; align-items: flex-end; }
+        .field { flex: 1; display: flex; flex-direction: column; }
+        .field label { margin-bottom: 8px; font-weight: 600; color: #475569; font-size: 0.9em; }
+        .field input, .field select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1em; background: #fff; }
+        .field input:focus, .field select:focus { outline: none; border-color: #3b82f6; }
+        
+        .btn-convert { background: #3b82f6; color: white; border: none; padding: 14px 30px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; }
+        .btn-convert:hover { background: #2563eb; }
+        
+        #mission-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .mission-card { background: white; padding: 40px; border-radius: 12px; max-width: 550px; text-align: center; border: 2px solid #3b82f6; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .mission-card h2 { color: #3b82f6; margin-top: 0; }
+        .mission-goals { text-align: left; background: #f8fafc; padding: 15px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
+        .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
+        
+        .hidden { display: none !important; }
+        
+        #modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 9998; }
+        #cookie-banner { position: fixed; z-index: 9999; background: #ffffff; color: #1e293b; padding: 20px 30px; border-top: 3px solid #3b82f6; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; box-sizing: border-box; }
+        #cookie-banner h2 { margin-top: 0; margin-bottom: 10px; font-size: 1.3em; color: #0f172a; }
+        #cookie-banner p { margin-top: 0; margin-bottom: 15px; font-size: 0.9em; color: #475569; }
+        .cookie-btns { display: flex; gap: 10px; justify-content: flex-end; }
+        
+        .btn-accept { background: #3b82f6; color: white; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        .btn-reject { background: #e2e8f0; color: #475569; padding: 10px 20px; border: 1px solid #cbd5e1; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        
+        .type-modal { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; max-width: 90vw; border-radius: 12px; border: none !important; border-top: 4px solid #3b82f6 !important; }
+        .type-banner { bottom: 0; left: 0; right: 0; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: center; }
+        .type-banner .cookie-content { text-align: left; max-width: 65%; margin-bottom: 0; }
+        
+        #customize-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; max-width: 95vw; height: 80vh; background: white; color: #1e293b; z-index: 10001; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); border-top: 4px solid #3b82f6; }
+        .customize-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; font-weight: bold; font-size: 1.2em; color: #0f172a; }
+        .back-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #3b82f6; }
+        .customize-body { padding: 25px; overflow-y: auto; flex-grow: 1; }
+        .toggle-card { border: 1px solid #e2e8f0; padding: 20px; border-radius: 6px; margin-bottom: 15px; background: #f8fafc; }
+        .customize-footer { padding: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 15px; background: #f1f5f9; }
+        
+        .success-state { text-align: center; padding: 40px 0; }
+        .success-state h2 { color: #10b981; font-size: 2em; margin-bottom: 10px; }
+        .success-state p { color: #475569; font-size: 1.1em; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    QuickConvert
+</div>
+
+<div id="mission-overlay">
+    <div class="mission-card">
+        <h2>SCENARIO 3</h2>
+        <p>Imagine you are at home on your personal laptop baking a cake using a recipe from an American blog.</p>
+        <p>You open a random online conversion tool to convert the oven temperature from Fahrenheit to Celsius.</p>
+        <div class="mission-goals">
+            <ul>
+                <li>Enter the value "350" to convert it.</li>
+                <li>Click the Convert button.</li>
+                <li><strong>Take your time; there is no timer.</strong></li>
+            </ul>
+        </div>
+        <button class="btn-convert" onclick="startMission()">START MISSION</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="converter-card" id="converter-form">
+        <h1>Temperature Converter</h1>
+        <div class="input-group">
+            <div class="field">
+                <label>Value</label>
+                <input type="number" id="conv-amount" placeholder="e.g. 350">
+            </div>
+            <div class="field">
+                <label>From</label>
+                <select>
+                    <option>Fahrenheit (°F)</option>
+                    <option>Celsius (°C)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>To</label>
+                <select>
+                    <option>Celsius (°C)</option>
+                    <option>Fahrenheit (°F)</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-convert" onclick="performConversion()">Convert</button>
+    </div>
+
+    <div class="converter-card hidden" id="success-screen">
+        <div class="success-state">
+            <h2>✓ Conversion Complete</h2>
+            <p>350 Fahrenheit = 176.66 Celsius</p>
+            <button class="btn-convert" style="width: auto;" onclick="nextScenario()">CONTINUE TO NEXT SCENARIO</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-backdrop" class="hidden"></div>
+<div id="cookie-banner" class="hidden">
+    <div class="cookie-content">
+        <h2>We Value Your Privacy</h2>
+        <p>This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. Please select your preferences below.</p>
+    </div>
+    <div class="cookie-btns">
+    </div>
+</div>
+
+<div id="customize-modal" class="hidden">
+    <div class="customize-header">
+        <button class="back-btn" onclick="closeCustomize()">←</button>
+        <span>Privacy Preferences</span>
+    </div>
+    <div class="customize-body">
+        <div class="toggle-card">
+            <strong>Essential Cookies</strong>
+            <p style="font-size: 0.9em; color: #475569;">Necessary for the website to function. They cannot be switched off in our systems.</p>
+            <div style="color: #3b82f6; font-weight: bold;">Always Active</div>
+        </div>
+        <div class="toggle-card">
+            <strong>Performance Cookies</strong>
+            <p style="font-size: 0.9em; color: #475569;">These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site.</p>
+        </div>
+        <div class="toggle-card">
+            <strong>Targeting Cookies</strong>
+            <p style="font-size: 0.9em; color: #475569;">These cookies may be set through our site by our advertising partners to build a profile of your interests.</p>
+        </div>
+    </div>
+    <div class="customize-footer">
+        <button class="btn-accept" onclick="logCookie('Custom - Save Preferences')">Save Preferences</button>
+    </div>
+</div>
+
+<script src="unit/unit.js"></script>
+</body>
+</html>
