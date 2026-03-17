@@ -35,6 +35,15 @@
 
         .hidden { display: none !important; }
 
+        #mission-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .mission-card { background: white; padding: 40px; border-radius: 12px; max-width: 550px; text-align: center; border: 2px solid #3b82f6; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .mission-card h2 { color: #3b82f6; margin-top: 0; }
+        .mission-goals { text-align: left; background: #f8fafc; padding: 15px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
+        .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
+        .btn-mission { background: #3b82f6; color: white; border: none; padding: 14px 30px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; }
+        .btn-mission:hover { background: #2563eb; }
+
         #fixation-button {
             position: absolute;
             top: 50%;
@@ -123,7 +132,21 @@
     </style>
 </head>
 <body>
-
+    <div id="mission-overlay">
+        <div class="mission-card">
+            <h2>START EXPERIMENT</h2>
+            <p>Welcome to the first phase of the study. You will be presented with rapid choices and different context prompts.</p>
+            <div class="mission-goals">
+                <ul>
+                    <li>Follow the changing instructions carefully on each screen.</li>
+                    <li>Read any context scenarios presented to you before proceeding.</li>
+                    <li>Click the buttons that match the instruction as quickly and naturally as you can.</li>
+                </ul>
+            </div>
+            <button class="btn-salient" style="width: 100%; font-size: 1.1em; padding: 15px;" onclick="document.getElementById('mission-overlay').classList.add('hidden')">BEGIN</button>
+        </div>
+    </div>
+    
     <div id="experiment-container">
         <div id="context-phase" class="hidden">
             <h2>New Scenario Roleplay</h2>
