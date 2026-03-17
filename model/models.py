@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict
 from sqlmodel import Field, SQLModel, Relationship
 
 class ExperimentData(SQLModel, table=True):
@@ -11,3 +11,4 @@ class ExperimentData(SQLModel, table=True):
     button_clicked: str
     reaction_time_ms: float
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+    preferences: Optional[str] = None

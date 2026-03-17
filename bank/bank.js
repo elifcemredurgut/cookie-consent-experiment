@@ -25,7 +25,7 @@ const USER_ID = getParticipantId();
 function getActiveConfig() {
     return {
         case: CASES[currentCaseIndex],
-        category: 'Cookie_Bank'
+        category: 'Cookie'
     };
 }
 
@@ -92,13 +92,21 @@ async function logCookie(action) {
     document.getElementById('customize-modal').classList.add('hidden');
     document.getElementById('modal-backdrop').classList.add('hidden');
 
+    let preferences = {};
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((box, index) => {
+        let name = box.id || `toggle_${index + 1}`;
+        preferences[name] = box.checked; 
+    });
+
     const payload = {
         user_id: USER_ID,
         scenario_name: "bank_transfer",
         category_name: config.category,
         case_name: config.case,
         button_clicked: action,
-        reaction_time_ms: reactionTime
+        reaction_time_ms: reactionTime,
+        preferences: JSON.stringify(preferences)
     };
 
     try {
@@ -115,7 +123,7 @@ async function logCookie(action) {
 async function completeTransfer() {
     const payload = {
         user_id: USER_ID,
-        scenario_name: "bank_transfer_privacy",
+        scenario_name: "bank_transfer",
         category_name: "Checkout",
         case_name: CASES[currentCaseIndex],
         button_clicked: "Authorize Transfer",

@@ -67,6 +67,47 @@
         .customize-body { padding: 25px; overflow-y: auto; flex-grow: 1; }
         .toggle-card { border: 1px solid #eee; padding: 20px; border-radius: 4px; margin-bottom: 15px; background: #fafafa; }
         .customize-footer { padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 15px; background: #f9f9f9; }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #9ca3af;
+            transition: .3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #009688;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
     </style>
 </head>
 <body>
@@ -148,25 +189,156 @@
         <span>Manage Preferences</span>
     </div>
     <div class="customize-body">
-        <h2>Your Data, Your Choice</h2>
-        <p>Adjust the toggles below to determine how your data is handled during this session.</p>
+        <h2>Manage your data</h2>
+        <p>You can choose how your personal data is used. Vendors want your permission to do the following:</p>
         
         <div class="toggle-card">
-            <strong>Strictly Necessary Cookies</strong>
-            <p style="font-size: 0.9em; color: #666;">Required for the site to function properly, including secure login and fraud prevention. Cannot be disabled.</p>
-            <div style="color: #009688; font-weight: bold;">Always Active</div>
+            <div class="toggle-header">
+                <strong>Store and/or access information on a device</strong>
+                <p>Cookies, device or similar online identifiers (e.g. login-based identifiers, randomly assigned identifiers, network based identifiers) together with other information (e.g. browser type and information, language, screen size, supported technologies etc.) can be stored or read on your device to recognise it each time it connects to an app or to a website, for one or several of the purposes presented here.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (125 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="1_store_access">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
         <div class="toggle-card">
-            <strong>Analytics & Performance</strong>
-            <p style="font-size: 0.9em; color: #666;">Allows us to count visits and traffic sources so we can measure and improve the performance of our site.</p>
+            <div class="toggle-header">
+                <strong>Use limited data to select advertising</strong>
+                <p>Advertising presented to you on this service can be based on limited data, such as the website or app you are using, your non-precise location, your device type or which content you are (or have been) interacting with </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (76 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="2_advertising">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (34 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked id="2_advertising_legitimate">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
         <div class="toggle-card">
-            <strong>Marketing & Profiling</strong>
-            <p style="font-size: 0.9em; color: #666;">Used to deliver advertisements more relevant to you and your interests across different devices.</p>
+            <div class="toggle-header">
+                <strong>Create profiles for personalised advertising</strong>
+                <p>Information about your activity on this service (such as forms you submit, content you look at) can be stored and combined with other information about you (for example, information from your previous activity on this service and other websites or apps) or similar users. This is then used to build or improve a profile about you (that might include possible interests and personal aspects). Your profile can be used (also later) to present advertising that appears more relevant based on your possible interests by this and other entities.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (125 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="3_profile">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
-    </div>
-    <div class="customize-footer">
-        <button class="btn-accept" onclick="logCookie('Custom - Save Preferences')">Save Preferences</button>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Measure advertising performance</strong>
+                <p>Information regarding which advertising is presented to you and how you interact with it can be used to determine how well an advert has worked for you or other users and whether the goals of the advertising were reached. For instance, whether you saw an ad, whether you clicked on it, whether it led you to buy a product or visit a website, etc. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (81 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="4_measure">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked id="4_measure_legitimate">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Measure content performance</strong>
+                <p>Information regarding which content is presented to you and how you interact with it can be used to determine whether the (non-advertising) content e.g. reached its intended audience and matched your interests. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (81 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="5_performance">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked id="5_performance_legitimate">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Develop and improve services</strong>
+                <p>Information about your activity on this service, such as your interaction with ads or content, can be very helpful to improve products and services and to build new products and services based on user interactions, the type of audience, etc. </p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent (73 vendors)</span>
+                <label class="switch">
+                    <input type="checkbox" id="6_improve">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div class="toggle-row">
+                <span>Legitimate interest (38 vendors) <span class="info-icon">ⓘ</span></span>
+                <label class="switch">
+                    <input type="checkbox" checked id="6_improve_legitimate"> 
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Use precise geolocation data</strong>
+                <p>With your acceptance, your precise location (within a radius of less than 500 metres) may be used in support of the purposes explained in this notice.</p>
+            </div>
+            
+            <div class="toggle-row">
+                <span>Consent</span>
+                <label class="switch">
+                    <input type="checkbox" id="7_geolocation">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Ensure security, prevent and detect fraud, and fix errors</strong>
+                <p>Your data can be used to monitor for and prevent unusual and possibly fraudulent activity (for example, regarding advertising, ad clicks by bots), and ensure systems and processes work properly and securely. </p>
+            </div>
+        </div>
+        <div class="toggle-card">
+            <div class="toggle-header">
+                <strong>Match and combine data from other data sources</strong>
+                <p>Information about your activity on this service may be matched and combined with other information relating to you and originating from various sources (for instance your activity on a separate online service, your use of a loyalty card in-store, or your answers to a survey), in support of the purposes explained in this notice.</p>
+            </div>
+        </div>
+        </div>
+        <div class="customize-footer">
+            <button class="btn-accept" onclick="logCookie('Custom - Accept All')">Accept all</button>
+            <button class="btn-confirm" onclick="logCookie('Custom - Save Preferences')">Confirm choices</button>
+        </div>
     </div>
 </div>
 
