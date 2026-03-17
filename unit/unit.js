@@ -121,7 +121,7 @@ async function performConversion() {
 
     const payload = {
         user_id: USER_ID,
-        scenario_name: "unit_converter_privacy",
+        scenario_name: "unit_converter",
         category_name: "Checkout",
         case_name: CASES[currentCaseIndex],
         button_clicked: "Convert",

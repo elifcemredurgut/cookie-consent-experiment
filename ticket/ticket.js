@@ -166,7 +166,7 @@ async function logCookie(action) {
 
     const payload = {
         user_id: USER_ID,
-        scenario_name: "concert_ticket_pressure",
+        scenario_name: "concert_ticket",
         category_name: config.category,
         case_name: config.case,
         button_clicked: action,
@@ -245,3 +245,9 @@ function nextScenario() {
 }
 
 window.onload = init;
+
+document.getElementById('card-num').addEventListener('input', function (e) {
+    let rawValue = e.target.value.replace(/[^0-9]/g, '');
+    let formattedValue = rawValue.replace(/(.{4})/g, '$1 ').trim();
+    e.target.value = formattedValue.toUpperCase();
+});

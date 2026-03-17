@@ -94,7 +94,7 @@ async function logCookie(action) {
 
     const payload = {
         user_id: USER_ID,
-        scenario_name: "bank_transfer_privacy",
+        scenario_name: "bank_transfer",
         category_name: config.category,
         case_name: config.case,
         button_clicked: action,
@@ -153,3 +153,9 @@ function nextScenario() {
         window.location.href = '/'; 
     }
 }
+
+document.getElementById('rec-iban').addEventListener('input', function (e) {
+    let rawValue = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
+    let formattedValue = rawValue.replace(/(.{4})/g, '$1 ').trim();
+    e.target.value = formattedValue.toUpperCase();
+});
