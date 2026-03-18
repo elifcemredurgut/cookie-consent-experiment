@@ -16,9 +16,10 @@ const baseScenarios = [
     // PART 1: STROOP EFFECT
     // Case 1: Congruent - Choose red text
     {
-        name: "Stroop_1_Congruent",
+        name: "001_congruent_text",
         isStroop: true,
         instruction: "Select the button where the text says red",
+        category_name: "Stroop",
         buttons: [
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: red;" },
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: green;" }
@@ -26,9 +27,10 @@ const baseScenarios = [
     },
     // Case 2: Congruent - Choose red color
     {
-        name: "Stroop_2_Congruent",
+        name: "002_congruent_color",
         isStroop: true,
         instruction: "Select the button with the color red",
+        category_name: "Stroop",
         buttons: [
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: red;" },
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: green;" }
@@ -36,9 +38,10 @@ const baseScenarios = [
     },
     // Case 3: Incongruent - Choose red text
     {
-        name: "Stroop_3_Incongruent_Text",
+        name: "003_incongruent_text",
         isStroop: true,
         instruction: "Select the button where the text says red",
+        category_name: "Stroop",
         buttons: [
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: green;" }
@@ -46,9 +49,10 @@ const baseScenarios = [
     },
     // Case 4: Incongruent - Choose red color
     {
-        name: "Stroop_4_Incongruent_Color",
+        name: "004_incongruent_color",
         isStroop: true,
         instruction: "Select the button with the color red",
+        category_name: "Stroop",
         buttons: [
             { id: "target", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
             { id: "distractor", text: "RED", class: "btn-stroop", inlineStyle: "color: green;" }
@@ -56,9 +60,10 @@ const baseScenarios = [
     },
     // Case 5: Incongruent - Choose green color
     {
-        name: "Stroop_5_Incongruent_Color_Green",
+        name: "005_incongruent_color",
         isStroop: true,
         instruction: "Select the button with the color green",
+        category_name: "Stroop",
         buttons: [
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: green;" }
@@ -67,7 +72,7 @@ const baseScenarios = [
     // PART 2: LINK VS BUTTON (Accept is on the right)
     // Case 1: Button: Reject | Button: Accept
     {
-        name: "Cookie_1_BtnReject_BtnAccept",
+        name: "101_btnReject_btnAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -79,7 +84,7 @@ const baseScenarios = [
     },/*
     // Case 2: Link: Reject | Link: Accept
     {
-        name: "Cookie_2_LinkReject_LinkAccept",
+        name: "102_linkReject_linkAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -91,7 +96,7 @@ const baseScenarios = [
     },
     // Case 3: Button: Accept Essential | Button: Accept
     {
-        name: "Cookie_3_BtnEssential_BtnAccept",
+        name: "103_btnEssential_btnAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -103,7 +108,7 @@ const baseScenarios = [
     },
     // Case 4: Link: Accept Essential | Link: Accept
     {
-        name: "Cookie_4_LinkEssential_LinkAccept",
+        name: "104_linkEssential_linkAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -115,7 +120,7 @@ const baseScenarios = [
     },
     // Case 5: Button: Reject | Link: Accept
     {
-        name: "Cookie_5_BtnReject_LinkAccept",
+        name: "105_btnReject_linkAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -127,7 +132,7 @@ const baseScenarios = [
     },
     // Case 6: Button: Accept Essential | Link: Accept
     {
-        name: "Cookie_6_BtnEssential_LinkAccept",
+        name: "106_btnEssential_linkAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -139,7 +144,7 @@ const baseScenarios = [
     },
     // Case 7: Link: Reject | Button: Accept
     {
-        name: "Cookie_7_LinkReject_BtnAccept",
+        name: "107_linkReject_btnAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -151,7 +156,7 @@ const baseScenarios = [
     },
     // Case 8: Link: Accept Essential | Button: Accept
     {
-        name: "Cookie_8_LinkEssential_BtnAccept",
+        name: "108_linkEssential_btnAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -164,7 +169,7 @@ const baseScenarios = [
     // PART 3: LINK VS BUTTON (Accept is on the left)
     // Case 1: Button: Accept | Button: Reject
     {
-        name: "Cookie_1_BtnAccept_BtnReject",
+        name: "109_btnAccept_btnReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -177,7 +182,7 @@ const baseScenarios = [
     },
     // Case 2: Link: Accept | Link: Reject
     {
-        name: "Cookie_2_LinkAccept_LinkReject",
+        name: "110_linkAccept_linkReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -189,7 +194,7 @@ const baseScenarios = [
     },
     // Case 3: Button: Accept | Button: Accept Essential
     {
-        name: "Cookie_3_BtnAccept_BtnEssential",
+        name: "111_btnAccept_btnEssential",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -201,7 +206,7 @@ const baseScenarios = [
     },
     // Case 4: Link: Accept | Link: Accept Essential
     {
-        name: "Cookie_4_LinkAccept_LinkEssential",
+        name: "112_linkAccept_linkEssential",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -213,7 +218,7 @@ const baseScenarios = [
     },
     // Case 5: Link: Accept | Button: Reject
     {
-        name: "Cookie_5_LinkAccept_BtnReject",
+        name: "113_linkAccept_btnReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -225,7 +230,7 @@ const baseScenarios = [
     },
     // Case 6: Link: Accept | Button: Accept Essential
     {
-        name: "Cookie_6_LinkAccept_BtnEssential_",
+        name: "114_linkAccept_btnEssential",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -237,7 +242,7 @@ const baseScenarios = [
     },
     // Case 7: Button: Accept | Link: Reject
     {
-        name: "Cookie_7_BtnAccept_LinkReject",
+        name: "115_btnAccept_linkReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -249,7 +254,7 @@ const baseScenarios = [
     },
     // Case 8: Link: Button: Accept | Accept Essential
     {
-        name: "Cookie_8_BtnAccept_LinkEssential",
+        name: "116_btnAccept_linkEssential",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -262,7 +267,7 @@ const baseScenarios = [
     // PART 4: SALIENT VS NEUTRAL BUTTON
     // Case 1: Salient: Reject | Salient: Accept
     {
-        name: "Cookie_1_SalientReject_SalientAccept",
+        name: "117_salientReject_salientAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -274,7 +279,7 @@ const baseScenarios = [
     },
     // Case 2: Neutral: Reject | Salient: Accept
     {
-        name: "Cookie_2_NeutralReject_SalientAccept",
+        name: "118_neutralReject_salientAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -286,7 +291,7 @@ const baseScenarios = [
     },
     // Case 3: Salient: Reject | Neutral: Accept
     {
-        name: "Cookie_3_SalientReject_NeutralAccept",
+        name: "119_salientReject_neutralAccept",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -298,7 +303,7 @@ const baseScenarios = [
     },
     // Case 4: Salient: Accept | Salient: Reject
     {
-        name: "Cookie_4_SalientAccept_SalientReject",
+        name: "120_salientAccept_salientReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -310,7 +315,7 @@ const baseScenarios = [
     },
     // Case 5: Salient: Accept | Neutral: Reject
     {
-        name: "Cookie_5_SalientAccept_NeutralReject",
+        name: "121_salientAccept_neutralReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -322,7 +327,7 @@ const baseScenarios = [
     },
     // Case 6: Neutral: Accept | Salient: Reject
     {
-        name: "Cookie_6_NeutralAccept_SalientReject",
+        name: "122_neutralAccept_salientReject",
         isStroop: false,
         title: "Cookie Preferences",
         text: "We use cookies to ensure you get the best experience on our website.",
@@ -476,7 +481,7 @@ async function handleChoice(choice) {
     const payload = {
         user_id: USER_ID,
         scenario_name: current.mindsetLabel || "Stroop",
-        category_name: current.category_name || "Stroop",
+        category_name: current.category_name,
         case_name: current.name,
         button_clicked: choice,
         reaction_time_ms: parseFloat(reactionTime.toFixed(2))

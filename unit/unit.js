@@ -1,14 +1,14 @@
 let experimentStartTime = null;
 
 const CASES = [
-    'banner_reject_accept', 
-    'banner_accept_reject', 
-    'banner_customize_accept', 
-    'banner_accept_customize',
-    'modal_reject_accept', 
-    'modal_accept_reject', 
-    'modal_customize_accept', 
-    'modal_accept_customize'
+    '401_banner_reject_accept', 
+    '402_banner_accept_reject', 
+    '403_banner_customize_accept', 
+    '404_banner_accept_customize',
+    '405_modal_reject_accept', 
+    '406_modal_accept_reject', 
+    '407_modal_customize_accept', 
+    '408_modal_accept_customize'
 ];
 let currentCaseIndex = 0;
 
@@ -39,7 +39,7 @@ function startMission() {
     
     const config = getActiveConfig();
     
-    const [displayType, leftBtnType, rightBtnType] = config.case.split('_');
+    const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
 
     banner.classList.remove('hidden');
 

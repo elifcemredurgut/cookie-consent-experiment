@@ -4,14 +4,14 @@ let experimentStartTime = null;
 let timerInterval = null;
 let currentCaseIndex = 0;
 const CASES = [
-    'banner_reject_accept', 
-    'banner_accept_reject', 
-    'banner_customize_accept', 
-    'banner_accept_customize',
-    'modal_reject_accept', 
-    'modal_accept_reject', 
-    'modal_customize_accept', 
-    'modal_accept_customize'
+    '201_banner_reject_accept', 
+    '202_banner_accept_reject', 
+    '203_banner_customize_accept', 
+    '204_banner_accept_customize',
+    '205_modal_reject_accept', 
+    '206_modal_accept_reject', 
+    '207_modal_customize_accept', 
+    '208_modal_accept_customize'
 ];
 
 function getParticipantId() {
@@ -109,7 +109,7 @@ function startMission() {
     const backdrop = document.getElementById('modal-backdrop');
     const btnContainer = document.querySelector('.cookie-btns');
     const config = getActiveConfig();
-    const [displayType, leftBtnType, rightBtnType] = config.case.split('_');
+    const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
 
     banner.classList.remove('hidden');
 
@@ -170,7 +170,7 @@ async function logCookie(action) {
         let name = box.id || `toggle_${index + 1}`;
         preferences[name] = box.checked; 
     });
-    
+
     const payload = {
         user_id: USER_ID,
         scenario_name: "concert_ticket",
