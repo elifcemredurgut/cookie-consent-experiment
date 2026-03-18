@@ -242,7 +242,6 @@ function nextScenario() {
         document.getElementById('card-num').value = '';
         document.getElementById('expiry').value = '';
         document.getElementById('cvc').value = '';
-        document.querySelector('.customize-body').scrollTop = 0;
         
         const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
         checkboxes.forEach(box => {

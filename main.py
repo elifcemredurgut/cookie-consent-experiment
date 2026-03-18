@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from sqlmodel import Session
+from sqlmodel import Session, select
 from database.database import engine, create_db_and_tables
 from model.models import ExperimentData
 import os
@@ -53,4 +53,16 @@ def read_bank():
 def read_unit():
     return FileResponse('unit/unit.html')
 
+@app.get("/user_progress/{user_id}")
+def get_user_progress(user_id: str):
+    with Session(engine) as session:
+        statement = select(ExperimentData.scenario_name).where(ExperimentData.user_id == user_id).distinct()
+        scenarios = session.exec(statement).all()
+        
+    return {
+        "scenario_1": any(s in scenarios for s in ["Stroop", "unsafe_pressure", "neutral", "unsafe_no_pressure"]),
+        "scenario_2": "concert_ticket" in scenarios,
+        "scenario_3": "bank_transfer" in scenarios,
+        "scenario_4": "unit_converter" in scenarios
+    }
 app.mount("/", StaticFiles(directory="."), name="static")

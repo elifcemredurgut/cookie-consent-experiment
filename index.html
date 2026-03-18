@@ -10,27 +10,80 @@
             width: 250px; padding: 40px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-decoration: none; color: #333;
         }
         .nav-card:hover { border-color: #007bff; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .nav-card h2 { color: #007bff; }
+        .nav-card h2 { color: #007bff; margin-top: 0; transition: color 0.3s; }
+        
+        .nav-card.completed {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #adb5bd;
+        }
+        .nav-card.completed h2 {
+            color: #adb5bd;
+        }
+        
+        .nav-card.active {
+            border-color: #007bff;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            transform: translateY(-5px);
+        }
+        .nav-card.active h2 {
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
     <div class="hub-container">
-        <a href="/button_test" class="nav-card">
+        <a href="/button_test" class="nav-card" id="card-1">
             <h2>Scenario 1</h2>
             <p>Stroop Test, and Cookie Scenarios</p>
         </a>
-        <a href="/ticket" class="nav-card">
+        <a href="/ticket" class="nav-card" id="card-2">
             <h2>Scenario 2</h2>
             <p>Booking Concert Tickets</p>
         </a>
-        <a href="/bank" class="nav-card">
+        <a href="/bank" class="nav-card" id="card-3">
             <h2>Scenario 3</h2>
             <p>Money Transfer</p>
         </a>
-        <a href="/unit" class="nav-card">
+        <a href="/unit" class="nav-card" id="card-4">
             <h2>Scenario 4</h2>
             <p>Converting Units</p>
         </a>
     </div>
+
+    <script>
+        async function checkProgress() {
+            let userId = localStorage.getItem('participant_id');
+            
+            if (!userId) {
+                document.getElementById('card-1').classList.add('active');
+                return;
+            }
+
+            try {
+                let response = await fetch(`/user_progress/${userId}`);
+                let progress = await response.json();
+
+                if (progress.scenario_1) document.getElementById('card-1').classList.add('completed');
+                if (progress.scenario_2) document.getElementById('card-2').classList.add('completed');
+                if (progress.scenario_3) document.getElementById('card-3').classList.add('completed');
+                if (progress.scenario_4) document.getElementById('card-4').classList.add('completed');
+
+                if (!progress.scenario_1) {
+                    document.getElementById('card-1').classList.add('active');
+                } else if (!progress.scenario_2) {
+                    document.getElementById('card-2').classList.add('active');
+                } else if (!progress.scenario_3) {
+                    document.getElementById('card-3').classList.add('active');
+                } else if (!progress.scenario_4) {
+                    document.getElementById('card-4').classList.add('active');
+                }
+            } catch (e) {
+                document.getElementById('card-1').classList.add('active');
+            }
+        }
+
+        window.onload = checkProgress;
+    </script>
 </body>
 </html>

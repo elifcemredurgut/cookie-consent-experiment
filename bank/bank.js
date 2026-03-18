@@ -153,7 +153,6 @@ function nextScenario() {
         document.getElementById('rec-iban').value = '';
         document.getElementById('rec-amount').value = '';
         document.getElementById('rec-text').value = '';
-        document.querySelector('.customize-body').scrollTop = 0;
         
         const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
         checkboxes.forEach(box => {
