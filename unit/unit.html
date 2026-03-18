@@ -131,16 +131,16 @@
             </div>
             <div class="field">
                 <label>From</label>
-                <select>
-                    <option>Fahrenheit (°F)</option>
-                    <option>Celsius (°C)</option>
+                <select id="from-unit">
+                    <option value="F">Fahrenheit (°F)</option>
+                    <option value="C">Celsius (°C)</option>
                 </select>
             </div>
             <div class="field">
                 <label>To</label>
-                <select>
-                    <option>Celsius (°C)</option>
-                    <option>Fahrenheit (°F)</option>
+                <select id="to-unit">
+                    <option value="C">Celsius (°C)</option>
+                    <option value="F">Fahrenheit (°F)</option>
                 </select>
             </div>
         </div>
@@ -150,7 +150,7 @@
     <div class="converter-card hidden" id="success-screen">
         <div class="success-state">
             <h2>✓ Conversion Complete</h2>
-            <p>350 Fahrenheit = 176.66 Celsius</p>
+            <p id="conversion-result"></p>
             <button class="btn-convert" style="width: auto;" onclick="nextScenario()">CONTINUE TO NEXT SCENARIO</button>
         </div>
     </div>

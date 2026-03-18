@@ -78,6 +78,7 @@ function startMission() {
 function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
+    document.querySelector('.customize-body').scrollTop = 0;
 }
 
 function closeCustomize() {
@@ -151,6 +152,17 @@ function nextScenario() {
         document.getElementById('rec-name').value = '';
         document.getElementById('rec-iban').value = '';
         document.getElementById('rec-amount').value = '';
+        document.getElementById('rec-text').value = '';
+        document.querySelector('.customize-body').scrollTop = 0;
+        
+        const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            if (box.id && box.id.includes('legitimate')) {
+                box.checked = true;
+            } else {
+                box.checked = false;
+            }
+        }); 
         
         document.getElementById('success-screen').classList.add('hidden');
         document.getElementById('transfer-form').classList.remove('hidden');

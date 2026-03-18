@@ -150,6 +150,7 @@ function startMission() {
 function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
+    document.querySelector('.customize-body').scrollTop = 0;
 }
 
 function closeCustomize() {
@@ -201,7 +202,7 @@ function showCheckoutForm() {
 async function completePurchase() {
     const payload = {
         user_id: USER_ID,
-        scenario_name: "Ticket Stress Scenario",
+        scenario_name: "concert_ticket",
         category_name: "Checkout",
         case_name: CASES[currentCaseIndex],
         button_clicked: "Confirm & Pay",
@@ -236,6 +237,21 @@ function nextScenario() {
         document.getElementById('grid-floor').innerHTML = '';
         document.getElementById('grid-bowl').innerHTML = '';
         init(); 
+        document.getElementById('form-email').value = '';
+        document.getElementById('form-phone').value = '';
+        document.getElementById('card-num').value = '';
+        document.getElementById('expiry').value = '';
+        document.getElementById('cvc').value = '';
+        document.querySelector('.customize-body').scrollTop = 0;
+        
+        const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            if (box.id && box.id.includes('legitimate')) {
+                box.checked = true;
+            } else {
+                box.checked = false;
+            }
+        }); 
 
         document.getElementById('success-screen').classList.add('hidden');
         document.getElementById('selection-screen').classList.remove('hidden');

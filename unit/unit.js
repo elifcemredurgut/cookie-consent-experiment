@@ -78,6 +78,7 @@ function startMission() {
 function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
+    document.querySelector('.customize-body').scrollTop = 0;
 }
 
 function closeCustomize() {
@@ -101,7 +102,7 @@ async function logCookie(action) {
 
     const payload = {
         user_id: USER_ID,
-        scenario_name: "unit_converter_privacy",
+        scenario_name: "unit_converter",
         category_name: config.category,
         case_name: config.case,
         button_clicked: action,
@@ -120,12 +121,27 @@ async function logCookie(action) {
 }
 
 async function performConversion() {
-    const amount = document.getElementById('conv-amount').value;
+    const amountInput = document.getElementById('conv-amount').value;
     
-    if(!amount) {
+    if(!amountInput) {
         alert("Please enter a value to convert.");
         return;
     }
+
+    const fromUnit = document.getElementById('from-unit').value;
+    const toUnit = document.getElementById('to-unit').value;
+    const amount = parseFloat(amountInput);
+    let resultAmount = amount;
+
+    if (fromUnit === 'F' && toUnit === 'C') {
+        resultAmount = (amount - 32) * 5/9;
+    } else if (fromUnit === 'C' && toUnit === 'F') {
+        resultAmount = (amount * 9/5) + 32;
+    }
+
+    const fromLabel = fromUnit === 'F' ? 'Fahrenheit' : 'Celsius';
+    const toLabel = toUnit === 'C' ? 'Celsius' : 'Fahrenheit';
+    document.getElementById('conversion-result').innerText = `${amount} ${fromLabel} = ${resultAmount.toFixed(2)} ${toLabel}`;
 
     const payload = {
         user_id: USER_ID,
@@ -155,6 +171,14 @@ function nextScenario() {
     if (currentCaseIndex < CASES.length) {
         document.getElementById('conv-amount').value = '';
         
+        const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            if (box.id && box.id.includes('legitimate')) {
+                box.checked = true;
+            } else {
+                box.checked = false;
+            }
+        });        
         document.getElementById('success-screen').classList.add('hidden');
         document.getElementById('converter-form').classList.remove('hidden');
         document.getElementById('mission-overlay').classList.remove('hidden');

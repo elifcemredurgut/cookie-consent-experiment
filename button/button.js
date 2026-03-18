@@ -1,6 +1,8 @@
 let currentScenario = 0;
 let startTime;
 let finalScenarioList = [];
+let countdownInterval;
+let isTimerRunning = false;
 
 function getParticipantId() {
     let id = localStorage.getItem('participant_id');
@@ -81,7 +83,7 @@ const baseScenarios = [
             { id: "reject", text: "Reject All", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
         ]
-    },/*
+    },
     // Case 2: Link: Reject | Link: Accept
     {
         name: "102_linkReject_linkAccept",
@@ -105,7 +107,7 @@ const baseScenarios = [
             { id: "reject", text: "Accept Essential", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
         ]
-    },
+    },/*
     // Case 4: Link: Accept Essential | Link: Accept
     {
         name: "104_linkEssential_linkAccept",
@@ -354,28 +356,33 @@ function shuffleArray(array) {
     return array;
 }
 
-let countdownInterval;
-
 function startTimer(durationSeconds) {
+    if (isTimerRunning) return; 
+
     clearInterval(countdownInterval);
+    isTimerRunning = true; 
     let timer = durationSeconds;
     const display = document.getElementById('time-left');
     const timerDiv = document.getElementById('timer-display');
     
+    function updateDisplay() {
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = minutes + ":" + seconds;
+    }
+
+    updateDisplay(); 
     timerDiv.classList.remove('hidden');
 
     countdownInterval = setInterval(() => {
-        let minutes = Math.floor(timer / 60);
-        let seconds = timer % 60;
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
         if (--timer < 0) {
             clearInterval(countdownInterval);
             display.textContent = "00:00";
+            isTimerRunning = false; 
+        } else {
+            updateDisplay(); 
         }
     }, 1000);
 }
@@ -383,6 +390,7 @@ function startTimer(durationSeconds) {
 function stopTimer() {
     clearInterval(countdownInterval);
     document.getElementById('timer-display').classList.add('hidden');
+    isTimerRunning = false;
 }
 
 function buildExperimentFlow() {
