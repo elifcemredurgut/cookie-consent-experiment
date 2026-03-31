@@ -1,14 +1,17 @@
 let experimentStartTime = null;
 
 const CASES = [
-    '301_banner_reject_accept', 
-    '302_banner_accept_reject', 
-    '303_banner_customize_accept', 
-    '304_banner_accept_customize',
-    '305_odal_reject_accept', 
-    '306_modal_accept_reject', 
-    '307_modal_customize_accept', 
-    '308_modal_accept_customize'
+    '301_banner_reject-neutral_accept-salient', 
+    '302_banner_accept-salient_reject-neutral', 
+    '303_banner_customize-neutral_accept-salient', 
+    '304_banner_accept-salient_customize-neutral',
+    '305_banner_accept-salient_customize-salient',
+    '306_banner_accept-salient_reject-salient',
+    '307_banner_customizetextlink_accept-salient',
+    '308_modal_reject-neutral_accept-salient', 
+    '309_modal_accept-salient_reject-neutral', 
+    '310_modal_customize-neutral_accept-salient', 
+    '311_modal_accept-salient_customize-neutral'
 ];
 let currentCaseIndex = 0;
 
@@ -36,10 +39,17 @@ function startMission() {
     const banner = document.getElementById('cookie-banner');
     const backdrop = document.getElementById('modal-backdrop');
     const btnContainer = document.querySelector('.cookie-btns');
+    const cookieText = document.querySelector('.cookie-content p');
     
     const config = getActiveConfig();
     
     const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
+
+    if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
+        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. <a onclick="openCustomize()">Manage your cookies</a>';
+    } else {
+        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.';
+    }
 
     banner.classList.remove('hidden');
 
@@ -53,26 +63,40 @@ function startMission() {
 
     btnContainer.innerHTML = ''; 
 
-    function createButton(type) {
+    function createButton(typeString) {
+        if (!typeString || typeString === 'customizetextlink') return null;
+        
+        const parts = typeString.split('-');
+        const action = parts[0];
+        const style = parts[1];
+
         const btn = document.createElement('button');
-        if (type === 'reject') {
-            btn.className = 'btn-reject';
+        
+        if (style === 'salient') {
+            btn.className = 'btn-salient';
+        } else if (style === 'neutral') {
+            btn.className = 'btn-neutral';
+        }
+
+        if (action === 'reject') {
             btn.innerText = 'Reject All';
             btn.onclick = () => logCookie('Reject All');
-        } else if (type === 'accept') {
-            btn.className = 'btn-accept';
+        } else if (action === 'accept') {
             btn.innerText = 'Accept All';
             btn.onclick = () => logCookie('Accept All');
-        } else if (type === 'customize') {
-            btn.className = 'btn-reject'; 
+        } else if (action === 'customize') {
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
         }
+        
         return btn;
     }
 
-    btnContainer.appendChild(createButton(leftBtnType));
-    btnContainer.appendChild(createButton(rightBtnType));
+    const leftBtn = createButton(leftBtnType);
+    if (leftBtn) btnContainer.appendChild(leftBtn);
+    
+    const rightBtn = createButton(rightBtnType);
+    if (rightBtn) btnContainer.appendChild(rightBtn);
 }
 
 function openCustomize() {
