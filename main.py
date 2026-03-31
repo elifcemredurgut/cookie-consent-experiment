@@ -60,7 +60,7 @@ def get_user_progress(user_id: str):
         scenarios = session.exec(statement).all()
         
     return {
-        "scenario_1": any(s in scenarios for s in ["Stroop", "unsafe_pressure", "neutral", "unsafe_no_pressure"]),
+        "scenario_1": any(s in scenarios for s in ["stroop", "unsafe_pressure", "neutral", "unsafe_no_pressure"]),
         "scenario_2": "concert_ticket" in scenarios,
         "scenario_3": "bank_transfer" in scenarios,
         "scenario_4": "unit_converter" in scenarios

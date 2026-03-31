@@ -12,6 +12,8 @@ const CASES = [
     '206_modal_accept_reject', 
     '207_modal_customize_accept', 
     '208_modal_accept_customize'
+    //to do: add saliency of reject 
+    //to do: add accept essential button
 ];
 
 function getParticipantId() {

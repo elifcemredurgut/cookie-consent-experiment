@@ -9,6 +9,7 @@
             --primary-blue: #007bff;
             --neutral-bg: #e9ecef;
             --text-muted: #6c757d;
+            --button-width: 260px;
         }
 
         body {
@@ -41,8 +42,6 @@
         .mission-goals { text-align: left; background: #f8fafc; padding: 15px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 0 8px 8px 0; }
         .mission-goals ul { margin: 5px 0 0 20px; padding: 0; }
         .mission-goals li { margin-bottom: 8px; font-size: 0.95em; }
-        .btn-mission { background: #3b82f6; color: white; border: none; padding: 14px 30px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; }
-        .btn-mission:hover { background: #2563eb; }
 
         #fixation-button {
             position: absolute;
@@ -59,15 +58,12 @@
             transition: background 0.2s, transform 0.1s;
         }
 
-        #fixation-button:active {
-            transform: translate(-50%, -50%) scale(0.95);
-        }
-
         #task-instruction {
             font-size: 24px;
             font-weight: bold;
             color: var(--primary-blue);
-            margin-bottom: 40px;
+            margin-top: 40px;
+            margin-bottom: 60px;
         }
 
         #banner-title { margin-bottom: 10px; }
@@ -80,54 +76,57 @@
             gap: 150px;
         }
 
+        .btn-stroop, .btn-salient, .btn-neutral, .link-muted {
+            width: var(--button-width);
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            box-sizing: border-box;
+        }
+
         .btn-stroop {
             background: transparent;
-            border: none;
-            padding: 30px 60px;
             font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
             text-transform: uppercase;
         }
 
         .btn-salient { 
             background: var(--primary-blue); 
             color: white; 
-            border: none; 
-            padding: 12px 28px; 
-            border-radius: 6px; 
             font-size: 16px;
-            font-weight: bold; 
-            cursor: pointer; 
         }
 
         .btn-neutral {
             background: var(--neutral-bg);
             color: #333;
             border: 1px solid #ccc;
-            padding: 12px 28px;
-            border-radius: 6px;
             font-size: 16px;
-            cursor: pointer;
         }
 
         .link-muted {
             background: transparent;
-            border: none;
             color: var(--text-muted);
             text-decoration: underline;
             font-size: 16px;
-            cursor: pointer;
-            padding: 12px 28px;
         }
 
-        input[type="text"] {
-            padding: 12px;
-            font-size: 16px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        #timer-display {
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #dc3545; 
+            border: 2px solid #dc3545; 
+            padding: 10px; 
+            border-radius: 8px;
+            background-color: #fff1f1;
         }
     </style>
 </head>
@@ -143,7 +142,7 @@
                     <li>Click the buttons that match the instruction as quickly and naturally as you can.</li>
                 </ul>
             </div>
-            <button class="btn-salient" style="width: 100%; font-size: 1.1em; padding: 15px;" onclick="document.getElementById('mission-overlay').classList.add('hidden')">BEGIN</button>
+            <button class="btn-salient" style="width: 100%; font-size: 1.1em; padding: 15px; height: auto;" onclick="document.getElementById('mission-overlay').classList.add('hidden')">BEGIN</button>
         </div>
     </div>
     
@@ -153,24 +152,14 @@
             <div id="context-box" style="border: 2px solid #555; padding: 20px; border-radius: 8px; margin: 20px 0;">
                 <p id="context-instruction"></p>
             </div>
-            <button class="btn-salient" onclick="proceedFromContext()">I understand my role - Continue</button>
+            <button class="btn-salient" style="margin: 0 auto; height: auto; padding: 12px 28px;" onclick="proceedFromContext()">I understand my role - Continue</button>
         </div>
 
         <div id="fixation-phase" class="hidden">
             <button id="fixation-button" onclick="renderBanner()">Next</button>
         </div>
 
-        <div id="timer-display" class="hidden" style="
-            position: absolute; 
-            top: 20px; 
-            right: 20px; 
-            font-size: 24px; 
-            font-weight: bold; 
-            color: #dc3545; 
-            border: 2px solid #dc3545; 
-            padding: 10px; 
-            border-radius: 8px;
-            background-color: #fff1f1;">
+        <div id="timer-display" class="hidden">
             Time Remaining: <span id="time-left">10:00</span>
         </div>
 
@@ -186,7 +175,7 @@
         <div id="completion-phase" class="hidden">
             <h2>Experiment Complete</h2>
             <p>Your responses have been securely recorded. Thank you!</p>
-            <button id="return-home-btn" class="btn-neutral" style="margin-top: 20px;" onclick="window.location.href='/'">
+            <button id="return-home-btn" class="btn-neutral" style="margin-top: 20px; margin-inline: auto;" onclick="window.location.href='/'">
                 Return to Home
             </button>
         </div>

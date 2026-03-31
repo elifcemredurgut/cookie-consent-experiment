@@ -488,7 +488,7 @@ async function handleChoice(choice) {
     
     const payload = {
         user_id: USER_ID,
-        scenario_name: current.mindsetLabel || "Stroop",
+        scenario_name: current.mindsetLabel || "stroop",
         category_name: current.category_name,
         case_name: current.name,
         button_clicked: choice,
