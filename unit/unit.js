@@ -1,14 +1,18 @@
 let experimentStartTime = null;
 
 const CASES = [
-    '401_banner_reject_accept', 
-    '402_banner_accept_reject', 
-    '403_banner_customize_accept', 
-    '404_banner_accept_customize',
-    '405_modal_reject_accept', 
-    '406_modal_accept_reject', 
-    '407_modal_customize_accept', 
-    '408_modal_accept_customize'
+    '401_banner_reject-neutral_accept-salient', 
+    '402_banner_accept-salient_reject-neutral', 
+    '403_banner_customize-neutral_accept-salient', 
+    '404_banner_accept-salient_customize-neutral',
+    '405_banner_accept-salient_customize-salient',
+    '406_banner_accept-salient_reject-salient',
+    '407_banner_customizetextlink_accept-salient',
+    '408_banner_customizelink_accept-salient',
+    '409_modal_reject-neutral_accept-salient', 
+    '410_modal_accept-salient_reject-neutral', 
+    '411_modal_customize-neutral_accept-salient', 
+    '412_modal_accept-salient_customize-neutral',
 ];
 let currentCaseIndex = 0;
 
@@ -36,10 +40,16 @@ function startMission() {
     const banner = document.getElementById('cookie-banner');
     const backdrop = document.getElementById('modal-backdrop');
     const btnContainer = document.querySelector('.cookie-btns');
+    const cookieText = document.querySelector('.cookie-content p');
     
     const config = getActiveConfig();
-    
     const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
+
+    if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
+        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a>';
+    } else {
+        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. Please select your preferences below.';
+    }
 
     banner.classList.remove('hidden');
 
@@ -53,26 +63,47 @@ function startMission() {
 
     btnContainer.innerHTML = ''; 
 
-    function createButton(type) {
+    function createButton(typeString) {
+        if (!typeString || typeString === 'customizetextlink') return null;
+        
         const btn = document.createElement('button');
-        if (type === 'reject') {
-            btn.className = 'btn-reject';
+
+        if (typeString === 'customizelink') {
+            btn.className = 'btn-link';
+            btn.innerText = 'Customize';
+            btn.onclick = openCustomize;
+            return btn;
+        }
+        
+        const parts = typeString.split('-');
+        const action = parts[0];
+        const style = parts[1];
+
+        if (style === 'salient') {
+            btn.className = 'btn-salient';
+        } else if (style === 'neutral') {
+            btn.className = 'btn-neutral';
+        }
+
+        if (action === 'reject') {
             btn.innerText = 'Reject All';
             btn.onclick = () => logCookie('Reject All');
-        } else if (type === 'accept') {
-            btn.className = 'btn-accept';
+        } else if (action === 'accept') {
             btn.innerText = 'Accept All';
             btn.onclick = () => logCookie('Accept All');
-        } else if (type === 'customize') {
-            btn.className = 'btn-reject'; 
+        } else if (action === 'customize') {
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
         }
+        
         return btn;
     }
 
-    btnContainer.appendChild(createButton(leftBtnType));
-    btnContainer.appendChild(createButton(rightBtnType));
+    const leftBtn = createButton(leftBtnType);
+    if (leftBtn) btnContainer.appendChild(leftBtn);
+    
+    const rightBtn = createButton(rightBtnType);
+    if (rightBtn) btnContainer.appendChild(rightBtn);
 }
 
 function openCustomize() {
@@ -116,13 +147,12 @@ async function logCookie(action) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-    } catch (e) {
-    }
+    } catch (e) {}
 }
 
 async function performConversion() {
     const amountInput = document.getElementById('conv-amount').value;
-    
+
     if(!amountInput) {
         alert("Please enter a value to convert.");
         return;
@@ -158,8 +188,7 @@ async function performConversion() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-    } catch (e) { 
-    }
+    } catch (e) {}
 
     document.getElementById('converter-form').classList.add('hidden');
     document.getElementById('success-screen').classList.remove('hidden');
@@ -182,8 +211,7 @@ function nextScenario() {
         document.getElementById('success-screen').classList.add('hidden');
         document.getElementById('converter-form').classList.remove('hidden');
         document.getElementById('mission-overlay').classList.remove('hidden');
-        
-        document.querySelector('.mission-card h2').innerText = `SCENARIO ${currentCaseIndex + 1}`;
+        document.querySelector('.mission-card h2').innerText = `SCENARIO ${currentCaseIndex + 4}`;
     } else {
         window.location.href = '/'; 
     }

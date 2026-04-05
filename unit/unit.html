@@ -37,12 +37,16 @@
         #cookie-banner { position: fixed; z-index: 9999; background: #ffffff; color: #1e293b; padding: 20px 30px; border-top: 3px solid #3b82f6; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; box-sizing: border-box; }
         #cookie-banner h2 { margin-top: 0; margin-bottom: 10px; font-size: 1.3em; color: #0f172a; }
         #cookie-banner p { margin-top: 0; margin-bottom: 15px; font-size: 0.9em; color: #475569; }
-        .cookie-btns { display: flex; gap: 10px; justify-content: flex-end; }
+        .cookie-btns { display: flex; gap: 50px; justify-content: flex-end; }
         
-        .btn-accept { background: #3b82f6; color: white; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; }
-        .btn-reject { background: #e2e8f0; color: #475569; padding: 10px 20px; border: 1px solid #cbd5e1; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        .btn-salient { background: #3b82f6; color: white; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        .btn-neutral { background: #e2e8f0; color: #475569; padding: 10px 20px; border: 1px solid #cbd5e1; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        .btn-link { background: transparent; color: #3b82f6; text-decoration: underline; padding: 10px 20px; border: none; cursor: pointer; font-weight: normal; font-size: inherit; font-family: inherit; }
         
         .type-modal { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; max-width: 90vw; border-radius: 12px; border: none !important; border-top: 4px solid #3b82f6 !important; }
+        .type-modal .cookie-btns { display: flex; justify-content: space-between; gap: 12px; width: 100%; margin-top: 20px; }
+        .type-modal .btn-salient, .type-modal .btn-neutral, .type-modal .btn-link { flex: 1; height: 48px; border-radius: 6px; padding: 0; }
+
         .type-banner { bottom: 0; left: 0; right: 0; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: center; }
         .type-banner .cookie-content { text-align: left; max-width: 65%; margin-bottom: 0; }
         
@@ -52,51 +56,20 @@
         .customize-body { padding: 25px; overflow-y: auto; flex-grow: 1; }
         .toggle-card { border: 1px solid #e2e8f0; padding: 20px; border-radius: 6px; margin-bottom: 15px; background: #f8fafc; }
         .customize-footer { padding: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 15px; background: #f1f5f9; }
+        .customize-footer button { flex: 1; height: 48px; font-weight: bold; cursor: pointer; border-radius: 4px; }
         
         .success-state { text-align: center; padding: 40px 0; }
         .success-state h2 { color: #10b981; font-size: 2em; margin-bottom: 10px; }
         .success-state p { color: #475569; font-size: 1.1em; margin-bottom: 30px; }
 
-        .toggle-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            margin-top: 10px;
-            border-top: 1px solid #eee;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-top: 10px; border-top: 1px solid #eee; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #9ca3af;
-            transition: .3s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #3b82f6;
-        }
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #9ca3af; transition: .3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #3b82f6; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .cookie-content a { color: #3b82f6; text-decoration: underline; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -317,11 +290,10 @@
                 <p>Information about your activity on this service may be matched and combined with other information relating to you and originating from various sources (for instance your activity on a separate online service, your use of a loyalty card in-store, or your answers to a survey), in support of the purposes explained in this notice.</p>
             </div>
         </div>
-        </div>
-        <div class="customize-footer">
-            <button class="btn-accept" onclick="logCookie('Custom - Accept All')">Accept all</button>
-            <button class="btn-confirm" onclick="logCookie('Custom - Save Preferences')">Confirm choices</button>
-        </div>
+    </div>
+    <div class="customize-footer">
+        <button class="btn-neutral" onclick="logCookie('Custom - Confirm choices')">Confirm choices</button>
+        <button class="btn-salient" onclick="logCookie('Custom - Accept All')">Accept all</button>
     </div>
 </div>
 
