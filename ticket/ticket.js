@@ -4,16 +4,18 @@ let experimentStartTime = null;
 let timerInterval = null;
 let currentCaseIndex = 0;
 const CASES = [
-    '201_banner_reject_accept', 
-    '202_banner_accept_reject', 
-    '203_banner_customize_accept', 
-    '204_banner_accept_customize',
-    '205_modal_reject_accept', 
-    '206_modal_accept_reject', 
-    '207_modal_customize_accept', 
-    '208_modal_accept_customize'
-    //to do: add saliency of reject 
-    //to do: add accept essential button
+    '201_banner_reject-neutral_accept-salient', 
+    '202_banner_accept-salient_reject-neutral', 
+    '203_banner_customize-neutral_accept-salient', 
+    '204_banner_accept-salient_customize-neutral',
+    '205_banner_accept-salient_customize-salient',
+    '206_banner_accept-salient_reject-salient',
+    '207_banner_customizetextlink_accept-salient',
+    '208_banner_customizelink_accept-salient',
+    '209_modal_reject-neutral_accept-salient', 
+    '210_modal_accept-salient_reject-neutral', 
+    '211_modal_customize-neutral_accept-salient', 
+    '212_modal_accept-salient_customize-neutral'
 ];
 
 function getParticipantId() {
@@ -127,19 +129,29 @@ function startMission() {
 
     function createButton(type) {
         const btn = document.createElement('button');
-        if (type === 'reject') {
-            btn.className = 'btn-reject';
+        
+        if (type.includes('reject')) {
             btn.innerText = 'Reject All';
             btn.onclick = () => logCookie('Reject All');
-        } else if (type === 'accept') {
-            btn.className = 'btn-accept';
+        } else if (type.includes('accept')) {
             btn.innerText = 'Accept All';
             btn.onclick = () => logCookie('Accept All');
-        } else if (type === 'customize') {
-            btn.className = 'btn-reject';
+        } else if (type.includes('customize')) {
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
         }
+
+        if (type.includes('-salient')) {
+            btn.className = 'btn-salient';
+        } else if (type.includes('-neutral')) {
+            btn.className = 'btn-neutral';
+        } else if (type.includes('link')) {
+            btn.className = 'btn-link';
+        } else {
+            if (type === 'accept') btn.className = 'btn-accept';
+            else btn.className = 'btn-reject';
+        }
+        
         return btn;
     }
 
