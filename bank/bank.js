@@ -8,10 +8,11 @@ const CASES = [
     '305_banner_accept-salient_customize-salient',
     '306_banner_accept-salient_reject-salient',
     '307_banner_customizetextlink_accept-salient',
-    '308_modal_reject-neutral_accept-salient', 
-    '309_modal_accept-salient_reject-neutral', 
-    '310_modal_customize-neutral_accept-salient', 
-    '311_modal_accept-salient_customize-neutral'
+    '308_banner_customizelink_accept-salient',
+    '309_modal_reject-neutral_accept-salient', 
+    '310_modal_accept-salient_reject-neutral', 
+    '311_modal_customize-neutral_accept-salient', 
+    '312_modal_accept-salient_customize-neutral',
 ];
 let currentCaseIndex = 0;
 
@@ -66,12 +67,19 @@ function startMission() {
     function createButton(typeString) {
         if (!typeString || typeString === 'customizetextlink') return null;
         
+        const btn = document.createElement('button');
+
+        if (typeString === 'customizelink') {
+            btn.className = 'btn-link';
+            btn.innerText = 'Customize';
+            btn.onclick = openCustomize;
+            return btn;
+        }
+        
         const parts = typeString.split('-');
         const action = parts[0];
         const style = parts[1];
 
-        const btn = document.createElement('button');
-        
         if (style === 'salient') {
             btn.className = 'btn-salient';
         } else if (style === 'neutral') {
