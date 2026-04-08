@@ -1,7 +1,7 @@
 let experimentStartTime = null;
 
 const CASES = [
-    '301_banner_reject-neutral_accept-salient', 
+    /*'301_banner_reject-neutral_accept-salient', 
     '302_banner_accept-salient_reject-neutral', 
     '303_banner_customize-neutral_accept-salient', 
     '304_banner_accept-salient_customize-neutral',
@@ -12,7 +12,10 @@ const CASES = [
     '309_modal_reject-neutral_accept-salient', 
     '310_modal_accept-salient_reject-neutral', 
     '311_modal_customize-neutral_accept-salient', 
-    '312_modal_accept-salient_customize-neutral',
+    '312_modal_accept-salient_customize-neutral',*/
+    '313_banner_essential-salient_accept-salient_leginterest',
+    '314_banner_essential-salient_accept-salient',
+    '315_banner_customize-salient_accept-salient_leginterest'
 ];
 let currentCaseIndex = 0;
 
@@ -33,6 +36,12 @@ function getActiveConfig() {
     };
 }
 
+function togglePurpose(btn) {
+    const details = btn.nextElementSibling;
+    btn.classList.toggle('active');
+    details.classList.toggle('active');
+}
+
 function startMission() {
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
@@ -43,13 +52,22 @@ function startMission() {
     const cookieText = document.querySelector('.cookie-content p');
     
     const config = getActiveConfig();
-    
-    const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
+    const parts = config.case.split('_');
+    const num = parts[0];
+    const displayType = parts[1];
+    const leftBtnType = parts[2];
+    const rightBtnType = parts[3];
 
-    if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
+    const defaultText = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.';
+
+    if (num === '313') {
+        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. Some of our partners process your data on the basis of legitimate interest. You have a right to object by clicking the customize link. <a onclick="openCustomize()">Customize your cookies</a>';
+    } else if (num === '314') {
+        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. <a onclick="openCustomize()">Customize your cookies</a>';
+    } else if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
         cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. <a onclick="openCustomize()">Manage your cookies</a>';
     } else {
-        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.';
+        cookieText.innerHTML = defaultText;
     }
 
     banner.classList.remove('hidden');
@@ -66,25 +84,18 @@ function startMission() {
 
     function createButton(typeString) {
         if (!typeString || typeString === 'customizetextlink') return null;
-        
         const btn = document.createElement('button');
-
         if (typeString === 'customizelink') {
             btn.className = 'btn-link';
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
             return btn;
         }
-        
-        const parts = typeString.split('-');
-        const action = parts[0];
-        const style = parts[1];
-
-        if (style === 'salient') {
-            btn.className = 'btn-salient';
-        } else if (style === 'neutral') {
-            btn.className = 'btn-neutral';
-        }
+        const bParts = typeString.split('-');
+        const action = bParts[0];
+        const style = bParts[1];
+        if (style === 'salient') btn.className = 'btn-salient';
+        else if (style === 'neutral') btn.className = 'btn-neutral';
 
         if (action === 'reject') {
             btn.innerText = 'Reject All';
@@ -95,22 +106,46 @@ function startMission() {
         } else if (action === 'customize') {
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
+        } else if (action === 'essential') {
+            btn.innerText = 'Accept Essential';
+            btn.onclick = () => logCookie('Accept Essential');
         }
-        
         return btn;
     }
 
-    const leftBtn = createButton(leftBtnType);
-    if (leftBtn) btnContainer.appendChild(leftBtn);
-    
-    const rightBtn = createButton(rightBtnType);
-    if (rightBtn) btnContainer.appendChild(rightBtn);
+    if (num === '313' || num === '314') {
+        btnContainer.appendChild(createButton('essential-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '315') {
+        btnContainer.appendChild(createButton('customize-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else {
+        const leftBtn = createButton(leftBtnType);
+        if (leftBtn) btnContainer.appendChild(leftBtn);
+        const rightBtn = createButton(rightBtnType);
+        if (rightBtn) btnContainer.appendChild(rightBtn);
+    }
 }
 
 function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
+    
+    const config = getActiveConfig();
+    const details = document.querySelectorAll('.purpose-details');
+    const titles = document.querySelectorAll('.purpose-title');
+    const legRows = document.querySelectorAll('.leg-interest');
+
+    if (config.case.startsWith('315')) {
+        titles.forEach(t => t.classList.remove('active'));
+        details.forEach(d => d.classList.remove('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    } else {
+        titles.forEach(t => t.classList.add('active'));
+        details.forEach(d => d.classList.add('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    }
 }
 
 function closeCustomize() {
@@ -179,26 +214,19 @@ async function completeTransfer() {
 
 function nextScenario() {
     currentCaseIndex++;
-    
     if (currentCaseIndex < CASES.length) {
         document.getElementById('rec-name').value = '';
         document.getElementById('rec-iban').value = '';
         document.getElementById('rec-amount').value = '';
         document.getElementById('rec-text').value = '';
-        
         const checkboxes = document.querySelectorAll('#customize-modal input[type="checkbox"]');
         checkboxes.forEach(box => {
-            if (box.id && box.id.includes('legitimate')) {
-                box.checked = true;
-            } else {
-                box.checked = false;
-            }
+            if (box.id && box.id.includes('legitimate')) box.checked = true;
+            else box.checked = false;
         }); 
-        
         document.getElementById('success-screen').classList.add('hidden');
         document.getElementById('transfer-form').classList.remove('hidden');
         document.getElementById('mission-overlay').classList.remove('hidden');
-        
         document.querySelector('.mission-card h2').innerText = `SCENARIO ${currentCaseIndex + 1}`;
     } else {
         window.location.href = '/'; 
