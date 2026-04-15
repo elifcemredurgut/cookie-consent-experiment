@@ -15,7 +15,10 @@ const CASES = [
     '209_modal_reject-neutral_accept-salient', 
     '210_modal_accept-salient_reject-neutral', 
     '211_modal_customize-neutral_accept-salient', 
-    '212_modal_accept-salient_customize-neutral'
+    '212_modal_accept-salient_customize-neutral',
+    '213_banner_essential-salient_accept-salient_leginterest',
+    '214_banner_essential-salient_accept-salient',
+    '215_banner_customize-salient_accept-salient_leginterest'
 ];
 
 function getParticipantId() {

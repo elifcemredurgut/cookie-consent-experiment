@@ -284,7 +284,7 @@
                 <li>Complete the checkout before the 5-minute timer expires.</li>
             </ul>
         </div>
-        <button class="btn-mission" onclick="startMission()">START MISSION</button>
+        <button id="start-mission" class="btn-mission" onclick="startMission()">START MISSION</button>
     </div>
 </div>
 
@@ -354,23 +354,23 @@
     <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
     <p>Your tickets have been reserved.</p>
     <p>Check your email box and phone (SMS) for the digital QR codes and payment receipts.</p>
-    <button class="btn-continue" onclick="nextScenario()" style="background: #026cdf;">CONTINUE</button>
+    <button id="continue" class="btn-continue" onclick="nextScenario()" style="background: #026cdf;">CONTINUE</button>
 </div>
 <div id="modal-backdrop" class="hidden"></div>
 <div id="cookie-banner" class="hidden">
     <div class="cookie-content">
         <h2 style="margin-top: 0; font-size: 1.4em;">Privacy Preferences</h2>
-        <p>We and our partners use cookies to process personal data like browsing patterns. Click "Accept" to allow this or "Reject all" to customize your settings.</p>
+        <p>We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.</p>
     </div>
     <div class="cookie-btns">
-        <button id="btn-reject-option" class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
-        <button id="btn-customize-option" class="btn-settings hidden" onclick="openCustomize()">Customize</button>
-        <button id="btn-accept-option" class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
+        <button id="cookie-reject" class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
+        <button id="cookie-customize" class="btn-settings hidden" onclick="openCustomize()">Customize</button>
+        <button id="cookie-acceptall" class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
     </div>
 </div>
 <div id="customize-modal" class="hidden">
     <div class="customize-header">
-        <button class="back-btn" onclick="closeCustomize()">←</button>
+        <button id="back" class="back-btn" onclick="closeCustomize()">←</button>
         <span>Data preferences</span>
     </div>
     <div class="customize-body">
@@ -521,8 +521,8 @@
         </div>
         </div>
         <div class="customize-footer">
-            <button class="btn-confirm" onclick="logCookie('Custom - Confirm')">Confirm choices</button>
-            <button class="btn-accept" onclick="logCookie('Custom - Accept All')">Accept all</button>
+            <button id="customize-confirm" class="btn-confirm" onclick="logCookie('Custom - Confirm')">Confirm Choices</button>
+            <button class="customize-acceptall" onclick="logCookie('Custom - Accept All')">Accept All</button>
         </div>
     </div>
 </div>

@@ -171,7 +171,7 @@
                 <li><strong>Take your time; there is no timer.</strong></li>
             </ul>
         </div>
-        <button class="btn-mission" onclick="startMission()">START MISSION</button>
+        <button id="start-mission" class="btn-mission" onclick="startMission()">START MISSION</button>
     </div>
 </div>
 
@@ -202,22 +202,22 @@
             <label>Message / Reference</label>
             <input type="text" id="rec-text" placeholder="Rent Payment - Apt 4B">
         </div>
-        <button class="btn-primary" onclick="completeTransfer()">Authorize Transfer</button>
+        <button id="authorize" class="btn-primary" onclick="completeTransfer()">Authorize Transfer</button>
     </div>
     
     <div class="content-area hidden" id="success-screen" style="text-align: center;">
         <h2 style="color: #009688; border: none;">✓ Transfer Authorized</h2>
         <p>Your funds have been successfully scheduled for transfer.</p>
         <p>A receipt has been sent to your registered email.</p>
-        <button class="btn-primary" style="margin-top: 20px; width: auto;" onclick="nextScenario()">CONTINUE TO NEXT SCENARIO</button>
+        <button id="continue" class="btn-primary" style="margin-top: 20px; width: auto;" onclick="nextScenario()">CONTINUE TO NEXT SCENARIO</button>
     </div>
 </div>
 
 <div id="modal-backdrop" class="hidden"></div>
 <div id="cookie-banner" class="hidden">
     <div class="cookie-content">
-        <h2>Data Privacy Notice</h2>
-        <p>We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.</p>
+        <h2>Privacy Preferences</h2>
+        <p>We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences.</p>
     </div>
     <div class="cookie-btns">
         </div>
@@ -225,7 +225,7 @@
 
 <div id="customize-modal" class="hidden">
     <div class="customize-header">
-        <button class="back-btn" onclick="closeCustomize()">←</button>
+        <button class="back" onclick="closeCustomize()">←</button>
         <span>Manage Preferences</span>
     </div>
     <div class="customize-body">
@@ -233,7 +233,7 @@
         <p>You can choose how your personal data is used. Vendors want your permission to do the following:</p>
         
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow1" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Store and/or access information on a device</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -250,7 +250,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow2" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Use limited data to select advertising</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -274,7 +274,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow3" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Create profiles for personalised advertising</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -291,7 +291,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow4" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Measure advertising performance</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -315,7 +315,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow5" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Measure content performance</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -339,7 +339,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow6" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Develop and improve services</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -363,7 +363,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow7" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Use precise geolocation data</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -380,7 +380,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow8" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Ensure security, prevent and detect fraud, and fix errors</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -390,7 +390,7 @@
         </div>
 
         <div class="toggle-card">
-            <button class="purpose-title" onclick="togglePurpose(this)">
+            <button id="arrow9" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Match and combine data from other data sources</strong>
                 <span class="purpose-arrow">▼</span>
             </button>
@@ -400,8 +400,8 @@
         </div>
     </div>
     <div class="customize-footer">
-        <button class="btn-confirm" onclick="logCookie('Custom - Confirm choices')">Confirm choices</button>
-        <button class="btn-salient" onclick="logCookie('Custom - Accept All')">Accept all</button>
+        <button id="customize-confirm" class="btn-confirm" onclick="logCookie('Custom - Confirm choices')">Confirm Choices</button>
+        <button id="customize-acceptall" class="btn-salient" onclick="logCookie('Custom - Accept All')">Accept All</button>
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 let experimentStartTime = null;
 
 const CASES = [
-    /*'301_banner_reject-neutral_accept-salient', 
+    '301_banner_reject-neutral_accept-salient', 
     '302_banner_accept-salient_reject-neutral', 
     '303_banner_customize-neutral_accept-salient', 
     '304_banner_accept-salient_customize-neutral',
@@ -12,11 +12,12 @@ const CASES = [
     '309_modal_reject-neutral_accept-salient', 
     '310_modal_accept-salient_reject-neutral', 
     '311_modal_customize-neutral_accept-salient', 
-    '312_modal_accept-salient_customize-neutral',*/
+    '312_modal_accept-salient_customize-neutral',
     '313_banner_essential-salient_accept-salient_leginterest',
     '314_banner_essential-salient_accept-salient',
     '315_banner_customize-salient_accept-salient_leginterest'
 ];
+
 let currentCaseIndex = 0;
 
 function getParticipantId() {
@@ -28,6 +29,29 @@ function getParticipantId() {
     return id;
 }
 const USER_ID = getParticipantId();
+
+async function logState(pageName, scrollY = 0) {
+    const config = getActiveConfig();
+    const payload = {
+        user_id: USER_ID,
+        case_name: config.case,
+        page_name: pageName,
+        scroll_y: Math.round(scrollY),
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('/log_state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging state:", e); }
+}
+
+document.querySelector('.customize-body').addEventListener('scroll', function(e) {
+    logState("Customize Modal", e.target.scrollTop);
+});
 
 function getActiveConfig() {
     return {
@@ -44,6 +68,7 @@ function togglePurpose(btn) {
 
 function startMission() {
     experimentStartTime = Date.now();
+    logState("IBAN Form", 0);
     document.getElementById('mission-overlay').classList.add('hidden');
     
     const banner = document.getElementById('cookie-banner');
@@ -99,15 +124,19 @@ function startMission() {
 
         if (action === 'reject') {
             btn.innerText = 'Reject All';
+            btn.id = 'cookie-reject';
             btn.onclick = () => logCookie('Reject All');
         } else if (action === 'accept') {
             btn.innerText = 'Accept All';
+            btn.id = 'cookie-acceptall';
             btn.onclick = () => logCookie('Accept All');
         } else if (action === 'customize') {
             btn.innerText = 'Customize';
+            btn.id = 'cookie-customize';
             btn.onclick = openCustomize;
         } else if (action === 'essential') {
             btn.innerText = 'Accept Essential';
+            btn.id = 'cookie-essential';
             btn.onclick = () => logCookie('Accept Essential');
         }
         return btn;
@@ -128,6 +157,7 @@ function startMission() {
 }
 
 function openCustomize() {
+    logState("Customize Modal", 0);
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
@@ -149,8 +179,9 @@ function openCustomize() {
 }
 
 function closeCustomize() {
-    document.getElementById('customize-modal').classList.add('hidden');
+    logState("IBAN Form", 0);
     document.getElementById('cookie-banner').classList.remove('hidden');
+    document.getElementById('customize-modal').classList.add('hidden');
 }
 
 async function logCookie(action) {
@@ -174,7 +205,8 @@ async function logCookie(action) {
         case_name: config.case,
         button_clicked: action,
         reaction_time_ms: reactionTime,
-        preferences: JSON.stringify(preferences)
+        preferences: JSON.stringify(preferences),
+        timestamp: Date.now() / 1000
     };
 
     try {
@@ -189,13 +221,15 @@ async function logCookie(action) {
 }
 
 async function completeTransfer() {
+    logState("Success Screen", 0);
     const payload = {
         user_id: USER_ID,
         scenario_name: "bank_transfer",
         category_name: "Checkout",
         case_name: CASES[currentCaseIndex],
         button_clicked: "Authorize Transfer",
-        reaction_time_ms: Date.now() - (experimentStartTime || Date.now())
+        reaction_time_ms: Date.now() - (experimentStartTime || Date.now()),
+        timestamp: Date.now() / 1000
     };
 
     try {
@@ -213,6 +247,7 @@ async function completeTransfer() {
 }
 
 function nextScenario() {
+    logState("Mission Overlay", 0);
     currentCaseIndex++;
     if (currentCaseIndex < CASES.length) {
         document.getElementById('rec-name').value = '';

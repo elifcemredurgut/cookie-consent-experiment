@@ -1,4 +1,4 @@
-from datetime import datetime
+import time
 from typing import Optional, List, Dict
 from sqlmodel import Field, SQLModel, Relationship
 
@@ -10,5 +10,13 @@ class ExperimentData(SQLModel, table=True):
     case_name: str
     button_clicked: str
     reaction_time_ms: float
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: float = Field(default_factory=time.time)
     preferences: Optional[str] = None
+
+class ExperimentState(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(index=True)
+    case_name: str
+    page_name: str
+    scroll_y: int
+    timestamp: float = Field(default_factory=time.time)

@@ -13,6 +13,9 @@ const CASES = [
     '410_modal_accept-salient_reject-neutral', 
     '411_modal_customize-neutral_accept-salient', 
     '412_modal_accept-salient_customize-neutral',
+    '413_banner_essential-salient_accept-salient_leginterest',
+    '414_banner_essential-salient_accept-salient',
+    '415_banner_customize-salient_accept-salient_leginterest'
 ];
 let currentCaseIndex = 0;
 
@@ -33,6 +36,12 @@ function getActiveConfig() {
     };
 }
 
+function togglePurpose(btn) {
+    const details = btn.nextElementSibling;
+    btn.classList.toggle('active');
+    details.classList.toggle('active');
+}
+
 function startMission() {
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
@@ -43,9 +52,17 @@ function startMission() {
     const cookieText = document.querySelector('.cookie-content p');
     
     const config = getActiveConfig();
-    const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
+    const parts = config.case.split('_');
+    const num = parts[0];
+    const displayType = parts[1];
+    const leftBtnType = parts[2];
+    const rightBtnType = parts[3];
 
-    if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
+    if (num === '413') {
+        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a> Some partners use legitimate interest so we do not need your consent but you have a right to object if you click the customize button.';
+    } else if (num === '414') {
+        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a>';
+    } else if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
         cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a>';
     } else {
         cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. Please select your preferences below.';
@@ -75,9 +92,9 @@ function startMission() {
             return btn;
         }
         
-        const parts = typeString.split('-');
-        const action = parts[0];
-        const style = parts[1];
+        const bParts = typeString.split('-');
+        const action = bParts[0];
+        const style = bParts[1];
 
         if (style === 'salient') {
             btn.className = 'btn-salient';
@@ -87,29 +104,62 @@ function startMission() {
 
         if (action === 'reject') {
             btn.innerText = 'Reject All';
+            btn.id = 'cookie-reject';
             btn.onclick = () => logCookie('Reject All');
         } else if (action === 'accept') {
             btn.innerText = 'Accept All';
+            btn.id = 'cookie-acceptall';
             btn.onclick = () => logCookie('Accept All');
         } else if (action === 'customize') {
             btn.innerText = 'Customize';
+            btn.id = 'cookie-customize';
             btn.onclick = openCustomize;
+        } else if (action === 'essential') {
+            btn.innerText = 'Accept Essential';
+            btn.id = 'cookie-essential';
+            btn.onclick = () => logCookie('Accept Essential');
         }
         
         return btn;
     }
 
-    const leftBtn = createButton(leftBtnType);
-    if (leftBtn) btnContainer.appendChild(leftBtn);
-    
-    const rightBtn = createButton(rightBtnType);
-    if (rightBtn) btnContainer.appendChild(rightBtn);
+    if (num === '413' || num === '414') {
+        btnContainer.appendChild(createButton('essential-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '415') {
+        btnContainer.appendChild(createButton('customize-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else {
+        const leftBtn = createButton(leftBtnType);
+        if (leftBtn) btnContainer.appendChild(leftBtn);
+        const rightBtn = createButton(rightBtnType);
+        if (rightBtn) btnContainer.appendChild(rightBtn);
+    }
 }
 
 function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
+
+    const config = getActiveConfig();
+    const titles = document.querySelectorAll('.purpose-title');
+    const details = document.querySelectorAll('.purpose-details');
+    const legRows = document.querySelectorAll('.leg-interest');
+
+    if (config.case.startsWith('416')) {
+        titles.forEach(t => t.classList.remove('active'));
+        details.forEach(d => d.classList.remove('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    } else if (config.case.startsWith('415')) {
+        titles.forEach(t => t.classList.remove('active'));
+        details.forEach(d => d.classList.remove('active'));
+        legRows.forEach(r => r.style.display = 'none');
+    } else {
+        titles.forEach(t => t.classList.add('active'));
+        details.forEach(d => d.classList.add('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    }
 }
 
 function closeCustomize() {

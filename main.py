@@ -4,8 +4,7 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 from database.database import engine, create_db_and_tables
-from model.models import ExperimentData
-import os
+from model.models import ExperimentData, ExperimentState
 
 app = FastAPI()
 
@@ -30,6 +29,13 @@ def on_startup():
 def log_click(data: ExperimentData):
     with Session(engine) as session:
         session.add(data)
+        session.commit()
+    return {"status": "success"}
+
+@app.post("/log_state")
+def log_state(state: ExperimentState):
+    with Session(engine) as session:
+        session.add(state)
         session.commit()
     return {"status": "success"}
 
