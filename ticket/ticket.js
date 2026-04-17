@@ -4,12 +4,12 @@ let experimentStartTime = null;
 let timerInterval = null;
 let currentCaseIndex = 0;
 const CASES = [
-    '201_banner_reject-neutral_accept-salient', 
+    /*'201_banner_reject-neutral_accept-salient', 
     '202_banner_accept-salient_reject-neutral', 
     '203_banner_customize-neutral_accept-salient', 
     '204_banner_accept-salient_customize-neutral',
     '205_banner_accept-salient_customize-salient',
-    '206_banner_accept-salient_reject-salient',
+    '206_banner_accept-salient_reject-salient',*/
     '207_banner_customizetextlink_accept-salient',
     '208_banner_customizelink_accept-salient',
     '209_modal_reject-neutral_accept-salient', 
@@ -108,6 +108,12 @@ function startTimer(duration) {
     }, 1000);
 }
 
+function togglePurpose(btn) {
+    const details = btn.nextElementSibling;
+    btn.classList.toggle('active');
+    details.classList.toggle('active');
+}
+
 function startMission() {
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
@@ -115,8 +121,25 @@ function startMission() {
     const banner = document.getElementById('cookie-banner');
     const backdrop = document.getElementById('modal-backdrop');
     const btnContainer = document.querySelector('.cookie-btns');
+    const cookieP = document.getElementById('cookie-p-text');
     const config = getActiveConfig();
-    const [num, displayType, leftBtnType, rightBtnType] = config.case.split('_');
+    const parts = config.case.split('_');
+    const num = parts[0];
+    const displayType = parts[1];
+    const leftBtnType = parts[2];
+    const rightBtnType = parts[3];
+
+    const defaultText = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience.';
+
+    if (num === '213') {
+        cookieP.innerHTML = defaultText + ' Some of our partners process your data on the basis of legitimate interest. You have a right to object by clicking the customize link. <a onclick="openCustomize()">Customize your cookies</a>';
+    } else if (num === '214') {
+        cookieP.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
+    } else if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
+        cookieP.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
+    } else {
+        cookieP.innerHTML = defaultText + ' Please choose your preferences.';
+    }
 
     banner.classList.remove('hidden');
 
@@ -142,6 +165,9 @@ function startMission() {
         } else if (type.includes('customize')) {
             btn.innerText = 'Customize';
             btn.onclick = openCustomize;
+        } else if (type.includes('essential')) {
+            btn.innerText = 'Accept Essential';
+            btn.onclick = () => logCookie('Accept Essential');
         }
 
         if (type.includes('-salient')) {
@@ -158,8 +184,18 @@ function startMission() {
         return btn;
     }
 
-    btnContainer.appendChild(createButton(leftBtnType));
-    btnContainer.appendChild(createButton(rightBtnType));
+    if (num === '213' || num === '214') {
+        btnContainer.appendChild(createButton('essential-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '215') {
+        btnContainer.appendChild(createButton('customize-salient'));
+        btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '207') {
+        btnContainer.appendChild(createButton(rightBtnType));
+    } else {
+        btnContainer.appendChild(createButton(leftBtnType));
+        btnContainer.appendChild(createButton(rightBtnType));
+    }
 
     startTimer(300);
 }
@@ -168,6 +204,21 @@ function openCustomize() {
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
+
+    const config = getActiveConfig();
+    const titles = document.querySelectorAll('.purpose-title');
+    const details = document.querySelectorAll('.purpose-details');
+    const legRows = document.querySelectorAll('.leg-interest');
+
+    if (config.case.startsWith('215')) {
+        titles.forEach(t => t.classList.remove('active'));
+        details.forEach(d => d.classList.remove('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    } else {
+        titles.forEach(t => t.classList.add('active'));
+        details.forEach(d => d.classList.add('active'));
+        legRows.forEach(r => r.style.display = 'flex');
+    }
 }
 
 function closeCustomize() {

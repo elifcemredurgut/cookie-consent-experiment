@@ -17,6 +17,7 @@ const CASES = [
     '414_banner_essential-salient_accept-salient',
     '415_banner_customize-salient_accept-salient_leginterest'
 ];
+
 let currentCaseIndex = 0;
 
 function getParticipantId() {
@@ -58,14 +59,16 @@ function startMission() {
     const leftBtnType = parts[2];
     const rightBtnType = parts[3];
 
+    const defaultText = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience.';
+
     if (num === '413') {
-        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a> Some partners use legitimate interest so we do not need your consent but you have a right to object if you click the customize button.';
+        cookieText.innerHTML = defaultText + ' Some of our partners process your data on the basis of legitimate interest. You have a right to object by clicking the customize link. <a onclick="openCustomize()">Customize your cookies</a>';
     } else if (num === '414') {
-        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a>';
+        cookieText.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
     } else if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
-        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. <a onclick="openCustomize()">Manage your preferences</a>';
+        cookieText.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
     } else {
-        cookieText.innerHTML = 'This website uses cookies to improve your browsing experience, analyze site traffic, and serve targeted advertisements. Please select your preferences below.';
+        cookieText.innerHTML = defaultText + ' Please choose your preferences.';
     }
 
     banner.classList.remove('hidden');
@@ -129,6 +132,8 @@ function startMission() {
     } else if (num === '415') {
         btnContainer.appendChild(createButton('customize-salient'));
         btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '407') {
+        btnContainer.appendChild(createButton(rightBtnType));
     } else {
         const leftBtn = createButton(leftBtnType);
         if (leftBtn) btnContainer.appendChild(leftBtn);
@@ -154,7 +159,7 @@ function openCustomize() {
     } else if (config.case.startsWith('415')) {
         titles.forEach(t => t.classList.remove('active'));
         details.forEach(d => d.classList.remove('active'));
-        legRows.forEach(r => r.style.display = 'none');
+        legRows.forEach(r => r.style.display = 'flex');
     } else {
         titles.forEach(t => t.classList.add('active'));
         details.forEach(d => d.classList.add('active'));

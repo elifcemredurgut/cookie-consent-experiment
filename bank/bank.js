@@ -83,16 +83,16 @@ function startMission() {
     const leftBtnType = parts[2];
     const rightBtnType = parts[3];
 
-    const defaultText = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.';
+    const defaultText = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience.';
 
     if (num === '313') {
-        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. Some of our partners process your data on the basis of legitimate interest. You have a right to object by clicking the customize link. <a onclick="openCustomize()">Customize your cookies</a>';
+        cookieText.innerHTML = defaultText + ' Some of our partners process your data on the basis of legitimate interest. You have a right to object by clicking the customize link. <a onclick="openCustomize()">Customize your cookies</a>';
     } else if (num === '314') {
-        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. <a onclick="openCustomize()">Customize your cookies</a>';
+        cookieText.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
     } else if (leftBtnType.includes('customizetextlink') || rightBtnType.includes('customizetextlink')) {
-        cookieText.innerHTML = 'We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure your security and personalize your experience. <a onclick="openCustomize()">Manage your cookies</a>';
+        cookieText.innerHTML = defaultText + ' <a onclick="openCustomize()">Customize your cookies</a>';
     } else {
-        cookieText.innerHTML = defaultText;
+        cookieText.innerHTML = defaultText + ' Please choose your preferences.';
     }
 
     banner.classList.remove('hidden');
@@ -148,6 +148,8 @@ function startMission() {
     } else if (num === '315') {
         btnContainer.appendChild(createButton('customize-salient'));
         btnContainer.appendChild(createButton('accept-salient'));
+    } else if (num === '307') {
+        btnContainer.appendChild(createButton(rightBtnType));
     } else {
         const leftBtn = createButton(leftBtnType);
         if (leftBtn) btnContainer.appendChild(leftBtn);

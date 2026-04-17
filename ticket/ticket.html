@@ -77,7 +77,6 @@
         .btn-mission { background: #3b82f6; color: white; border: none; padding: 14px 30px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; }
         .btn-mission:hover { background: #2563eb; }
 
-        /* Base container */
         #cookie-banner {
             position: fixed;
             z-index: 9999;
@@ -90,7 +89,6 @@
             box-sizing: border-box;
         }
 
-        /* Case 1: Centered Modal */
         .type-modal {
             top: 50%;
             left: 50%;
@@ -124,7 +122,6 @@
             margin-top: 10px;
         }
 
-        /* Case 2: Bottom Banner */
         .type-banner {
             bottom: 0;
             left: 0;
@@ -138,13 +135,13 @@
         }
         .type-banner .cookie-content {
             text-align: left;
-            flex: 1; /* Pushes buttons to the right and takes up remaining space */
-            padding-right: 30px; /* Ensures text doesn't touch the buttons */
+            flex: 1;
+            padding-right: 30px;
             max-width: none;
             margin-bottom: 0;
         }
         .type-banner .cookie-btns {
-            flex-shrink: 0; /* Prevents the buttons from squishing */
+            flex-shrink: 0;
             justify-content: flex-end;
             width: auto;
         }
@@ -155,10 +152,11 @@
             margin-right: 40px;
             align-items: center;
         }
+
         #customize-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 600px; max-width: 95vw; height: 85vh;
-            background: #1f2937; /* Dark navy background */
+            background: #1f2937;
             color: white; 
             z-index: 10001; border-radius: 16px;
             display: flex; flex-direction: column; overflow: hidden;
@@ -192,10 +190,17 @@
             margin-bottom: 15px;
             display: flex;
             flex-direction: column;
-            background: #2d3748; /* Slightly lighter gray for contrast */
+            background: #2d3748;
         }
+        
+        .purpose-title { cursor: pointer; display: flex; justify-content: space-between; align-items: center; width: 100%; border: none; background: none; text-align: left; padding: 0; font-family: inherit; font-size: inherit; color: white; font-weight: bold; }
+        .purpose-arrow { font-size: 0.8em; color: #9ca3af; transition: transform 0.2s; }
+        .purpose-title.active .purpose-arrow { transform: rotate(180deg); }
+        .purpose-details { display: none; margin-top: 15px; }
+        .purpose-details.active { display: block; }
+
         .toggle-header strong { color: white; }
-        .toggle-header p { color: #9ca3af; } /* Dimmed text for descriptions */
+        .toggle-header p { color: #9ca3af; margin-top: 10px; font-size: 0.9em; line-height: 1.5; }
 
         .toggle-row {
             display: flex;
@@ -204,6 +209,7 @@
             padding: 10px 0;
             border-top: 1px solid #4a5568;
             color: #e2e8f0;
+            margin-top: 10px;
         }
         .info-icon {
             font-size: 0.85em;
@@ -243,13 +249,15 @@
         input:checked + .slider:before {
             transform: translateX(20px);
         }
-        #customize-modal .btn-accept {
+        #customize-modal .customize-acceptall {
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             font-weight: bold;
             font-size: 0.8em;
             cursor: pointer;
+            background: #10b981;
+            color: white;
         }
         #modal-backdrop {
             position: fixed;
@@ -264,6 +272,7 @@
         #cookie-banner, #customize-modal {
             z-index: 9999 !important;
         }
+        .cookie-content a { color: #60a5fa; text-decoration: underline; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -360,13 +369,9 @@
 <div id="cookie-banner" class="hidden">
     <div class="cookie-content">
         <h2 style="margin-top: 0; font-size: 1.4em;">Privacy Preferences</h2>
-        <p>We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.</p>
+        <p id="cookie-p-text">We and our trusted partners use cookies and similar technologies to process data on this device. This helps us ensure security and personalize your experience. Please select your preferences below.</p>
     </div>
-    <div class="cookie-btns">
-        <button id="cookie-reject" class="btn-reject" onclick="logCookie('Reject All')">Reject All</button>
-        <button id="cookie-customize" class="btn-settings hidden" onclick="openCustomize()">Customize</button>
-        <button id="cookie-acceptall" class="btn-accept" onclick="logCookie('Accept All')">Accept All</button>
-    </div>
+    <div class="cookie-btns"></div>
 </div>
 <div id="customize-modal" class="hidden">
     <div class="customize-header">
@@ -378,151 +383,167 @@
         <p>You can choose how your personal data is used. Vendors want your permission to do the following:</p>
         
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow1" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Store and/or access information on a device</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Cookies, device or similar online identifiers (e.g. login-based identifiers, randomly assigned identifiers, network based identifiers) together with other information (e.g. browser type and information, language, screen size, supported technologies etc.) can be stored or read on your device to recognise it each time it connects to an app or to a website, for one or several of the purposes presented here.</p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (125 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="1_store_access">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (125 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="1_store_access">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow2" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Use limited data to select advertising</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Advertising presented to you on this service can be based on limited data, such as the website or app you are using, your non-precise location, your device type or which content you are (or have been) interacting with </p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (76 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="2_advertising">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        
-            <div class="toggle-row">
-                <span>Legitimate interest (34 vendors) <span class="info-icon">ⓘ</span></span>
-                <label class="switch">
-                    <input type="checkbox" checked id="2_advertising_legitimate">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (76 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="2_advertising">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row leg-interest">
+                    <span>Legitimate interest (34 vendors) <span class="info-icon">ⓘ</span></span>
+                    <label class="switch">
+                        <input type="checkbox" checked id="2_advertising_legitimate">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow3" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Create profiles for personalised advertising</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Information about your activity on this service (such as forms you submit, content you look at) can be stored and combined with other information about you (for example, information from your previous activity on this service and other websites or apps) or similar users. This is then used to build or improve a profile about you (that might include possible interests and personal aspects). Your profile can be used (also later) to present advertising that appears more relevant based on your possible interests by this and other entities.</p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (125 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="3_profile">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (125 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="3_profile">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow4" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Measure advertising performance</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Information regarding which advertising is presented to you and how you interact with it can be used to determine how well an advert has worked for you or other users and whether the goals of the advertising were reached. For instance, whether you saw an ad, whether you clicked on it, whether it led you to buy a product or visit a website, etc. </p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (81 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="4_measure">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        
-            <div class="toggle-row">
-                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
-                <label class="switch">
-                    <input type="checkbox" checked id="4_measure_legitimate">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (81 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="4_measure">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row leg-interest">
+                    <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                    <label class="switch">
+                        <input type="checkbox" checked id="4_measure_legitimate">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow5" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Measure content performance</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Information regarding which content is presented to you and how you interact with it can be used to determine whether the (non-advertising) content e.g. reached its intended audience and matched your interests. </p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (81 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="5_performance">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        
-            <div class="toggle-row">
-                <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
-                <label class="switch">
-                    <input type="checkbox" checked id="5_performance_legitimate">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (81 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="5_performance">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row leg-interest">
+                    <span>Legitimate interest (48 vendors) <span class="info-icon">ⓘ</span></span>
+                    <label class="switch">
+                        <input type="checkbox" checked id="5_performance_legitimate">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow6" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Develop and improve services</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Information about your activity on this service, such as your interaction with ads or content, can be very helpful to improve products and services and to build new products and services based on user interactions, the type of audience, etc. </p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent (73 vendors)</span>
-                <label class="switch">
-                    <input type="checkbox" id="6_improve">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        
-            <div class="toggle-row">
-                <span>Legitimate interest (38 vendors) <span class="info-icon">ⓘ</span></span>
-                <label class="switch">
-                    <input type="checkbox" checked id="6_improve_legitimate"> 
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent (73 vendors)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="6_improve">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row leg-interest">
+                    <span>Legitimate interest (38 vendors) <span class="info-icon">ⓘ</span></span>
+                    <label class="switch">
+                        <input type="checkbox" checked id="6_improve_legitimate"> 
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow7" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Use precise geolocation data</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>With your acceptance, your precise location (within a radius of less than 500 metres) may be used in support of the purposes explained in this notice.</p>
-            </div>
-            
-            <div class="toggle-row">
-                <span>Consent</span>
-                <label class="switch">
-                    <input type="checkbox" id="7_geolocation">
-                    <span class="slider"></span>
-                </label>
+                <div class="toggle-row">
+                    <span>Consent</span>
+                    <label class="switch">
+                        <input type="checkbox" id="7_geolocation">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow8" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Ensure security, prevent and detect fraud, and fix errors</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Your data can be used to monitor for and prevent unusual and possibly fraudulent activity (for example, regarding advertising, ad clicks by bots), and ensure systems and processes work properly and securely. </p>
             </div>
         </div>
         <div class="toggle-card">
-            <div class="toggle-header">
+            <button id="arrow9" class="purpose-title" onclick="togglePurpose(this)">
                 <strong>Match and combine data from other data sources</strong>
+                <span class="purpose-arrow">▼</span>
+            </button>
+            <div class="purpose-details">
                 <p>Information about your activity on this service may be matched and combined with other information relating to you and originating from various sources (for instance your activity on a separate online service, your use of a loyalty card in-store, or your answers to a survey), in support of the purposes explained in this notice.</p>
             </div>
         </div>
         </div>
         <div class="customize-footer">
             <button id="customize-confirm" class="btn-confirm" onclick="logCookie('Custom - Confirm')">Confirm Choices</button>
-            <button class="customize-acceptall" onclick="logCookie('Custom - Accept All')">Accept All</button>
+            <button id="customıze-acceptall" class="customize-acceptall" onclick="logCookie('Custom - Accept All')">Accept All</button>
         </div>
     </div>
 </div>
