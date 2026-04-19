@@ -3,15 +3,17 @@ let selectedSeats = [];
 let experimentStartTime = null;
 let timerInterval = null;
 let currentCaseIndex = 0;
+let currentPage = "";
+
 const CASES = [
-    /*'201_banner_reject-neutral_accept-salient', 
-    '202_banner_accept-salient_reject-neutral', 
+    '201_banner_reject-neutral_accept-salient', 
+    /*'202_banner_accept-salient_reject-neutral', */
     '203_banner_customize-neutral_accept-salient', 
-    '204_banner_accept-salient_customize-neutral',
+    /*'204_banner_accept-salient_customize-neutral',
     '205_banner_accept-salient_customize-salient',
-    '206_banner_accept-salient_reject-salient',*/
+    '206_banner_accept-salient_reject-salient',
     '207_banner_customizetextlink_accept-salient',
-    '208_banner_customizelink_accept-salient',
+    '208_banner_customizelink_accept-salient',*/
     '209_modal_reject-neutral_accept-salient', 
     '210_modal_accept-salient_reject-neutral', 
     '211_modal_customize-neutral_accept-salient', 
@@ -30,6 +32,29 @@ function getParticipantId() {
     return id;
 }
 const USER_ID = getParticipantId();
+
+async function logState(pageName, scrollY = 0) {
+    const config = getActiveConfig();
+    const payload = {
+        user_id: USER_ID,
+        case_name: config.case,
+        page_name: pageName,
+        scroll_y: Math.round(scrollY),
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('/log_state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging state:", e); }
+}
+
+document.querySelector('.customize-body').addEventListener('scroll', function(e) {
+    logState("Customize Modal", e.target.scrollTop);
+});
 
 function getActiveConfig() {
     return {
@@ -115,6 +140,8 @@ function togglePurpose(btn) {
 }
 
 function startMission() {
+    currentPage = "Seat Selection";
+    logState(currentPage, 0);
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
     
@@ -201,6 +228,7 @@ function startMission() {
 }
 
 function openCustomize() {
+    logState("Customize Modal", 0);
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
@@ -222,6 +250,7 @@ function openCustomize() {
 }
 
 function closeCustomize() {
+    logState(currentPage, 0);
     document.getElementById('customize-modal').classList.add('hidden');
     document.getElementById('cookie-banner').classList.remove('hidden');
 }
@@ -262,12 +291,16 @@ async function logCookie(action) {
 }
 
 function showCheckoutForm() {
+    currentPage = "Checkout Form";
+    logState(currentPage, 0);
     document.getElementById('selection-screen').classList.add('hidden');
     document.getElementById('checkout-screen').classList.remove('hidden');
     window.scrollTo(0, 0);
 }
 
 async function completePurchase() {
+    currentPage = "Success Screen";
+    logState(currentPage, 0);
     const payload = {
         user_id: USER_ID,
         scenario_name: "concert_ticket",
@@ -298,6 +331,8 @@ async function completePurchase() {
 }
 
 function nextScenario() {
+    currentPage = "Mission Overlay";
+    logState(currentPage, 0);
     currentCaseIndex++;
     
     if (currentCaseIndex < CASES.length) {

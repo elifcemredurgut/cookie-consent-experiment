@@ -30,6 +30,29 @@ function getParticipantId() {
 }
 const USER_ID = getParticipantId();
 
+async function logState(pageName, scrollY = 0) {
+    const config = getActiveConfig();
+    const payload = {
+        user_id: USER_ID,
+        case_name: config.case,
+        page_name: pageName,
+        scroll_y: Math.round(scrollY),
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('/log_state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging state:", e); }
+}
+
+document.querySelector('.customize-body').addEventListener('scroll', function(e) {
+    logState("Customize Modal", e.target.scrollTop);
+});
+
 function getActiveConfig() {
     return {
         case: CASES[currentCaseIndex],
@@ -44,6 +67,7 @@ function togglePurpose(btn) {
 }
 
 function startMission() {
+    logState("Converter Form", 0);
     experimentStartTime = Date.now();
     document.getElementById('mission-overlay').classList.add('hidden');
     
@@ -143,6 +167,7 @@ function startMission() {
 }
 
 function openCustomize() {
+    logState("Customize Modal", 0);
     document.getElementById('cookie-banner').classList.add('hidden');
     document.getElementById('customize-modal').classList.remove('hidden');
     document.querySelector('.customize-body').scrollTop = 0;
@@ -168,6 +193,7 @@ function openCustomize() {
 }
 
 function closeCustomize() {
+    logState("Converter Form", 0);
     document.getElementById('customize-modal').classList.add('hidden');
     document.getElementById('cookie-banner').classList.remove('hidden');
 }
@@ -206,6 +232,7 @@ async function logCookie(action) {
 }
 
 async function performConversion() {
+    logState("Success Screen", 0);
     const amountInput = document.getElementById('conv-amount').value;
 
     if(!amountInput) {
@@ -250,6 +277,7 @@ async function performConversion() {
 }
 
 function nextScenario() {
+    logState("Mission Overlay", 0);
     currentCaseIndex++;
     
     if (currentCaseIndex < CASES.length) {
