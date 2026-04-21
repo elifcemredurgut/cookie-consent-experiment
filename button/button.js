@@ -14,6 +14,26 @@ function getParticipantId() {
 }
 const USER_ID = getParticipantId();
 
+async function logState(pageName, scrollY = 0) {
+    const current = finalScenarioList[currentScenario] || { mindsetLabel: "intro", name: "initial" };
+    const payload = {
+        user_id: USER_ID,
+        scenario_name: current.mindsetLabel || "stroop",
+        case_name: current.name || "N/A",
+        page_name: pageName,
+        scroll_y: Math.round(scrollY),
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('http://127.0.0.1:8000/log_state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging state:", e); }
+}
+
 const baseScenarios = [
     // PART 1: STROOP EFFECT
     // Case 1: Congruent - Choose red text
@@ -344,8 +364,7 @@ const baseScenarios = [
 const mindsetScenarios = [
     { id: "unsafe_no_pressure", instruction: "Imagine that you are at Aalto University library and using a public computer found in the library. You need to log in to your bank account to make a money transfer. Tonight is the deadline to make the transfer but you do not have time pressure." },
     { id: "neutral", instruction: "Imagine that you are at home on a Sunday morning using your personal laptop. You are browsing a local news website to check the weekend weather forecast and read a few headlines. You have no specific time pressure" },
-    { id: "unsafe_pressure", instruction: "Imagine that you are on your own personal laptop at home. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but your friend has just found a website \
-        which sells extra tickets with the same price. You just want to finish the transaction before the tickets sell out." }
+    { id: "unsafe_pressure", instruction: "Imagine that you are on your own personal laptop at home. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but your friend has just found a website which sells extra tickets with the same price. You just want to finish the transaction before the tickets sell out." }
 ];
 
 function shuffleArray(array) {
@@ -400,12 +419,12 @@ function buildExperimentFlow() {
         finalScenarioList.push({
             name: `Context_${mindset.id}`,
             isContextPrompt: true,
+            mindsetLabel: mindset.id,
             text: mindset.instruction
         });
 
         let cookieCases = baseScenarios.filter(s => !s.isStroop).map(s => ({
             ...s,
-            name: s.name,
             mindsetLabel: mindset.id
         }));
         cookieCases = shuffleArray(cookieCases);
@@ -415,6 +434,13 @@ function buildExperimentFlow() {
 
 function startExperiment() {    
     buildExperimentFlow();
+    // Log once for the very first intro overlay
+    logState("Mission Overlay", 0);
+}
+
+function closeOverlay() {
+    document.getElementById('mission-overlay').classList.add('hidden');
+    // Moving to the next step logs the Next Button only after user action
     loadScenario();
 }
 
@@ -422,13 +448,13 @@ function loadScenario() {
     document.getElementById('context-phase').classList.add('hidden');
     document.getElementById('experiment-phase').classList.add('hidden');
     document.getElementById('fixation-phase').classList.remove('hidden');
+    
+    // Logs intermediate state only when this specific view is rendered
+    logState("Next Button", 0);
 }
 
 function renderBanner() {
     document.getElementById('fixation-phase').classList.add('hidden');
-    document.getElementById('context-phase').classList.add('hidden');
-    document.getElementById('experiment-phase').classList.add('hidden');
-
     const scenario = finalScenarioList[currentScenario];
 
     if (scenario.mindsetLabel === "unsafe_pressure" && !scenario.isContextPrompt) {
@@ -438,10 +464,12 @@ function renderBanner() {
     }
     
     if (scenario.isContextPrompt) {
+        logState("Mission Overlay", 0);
         const contextPhase = document.getElementById('context-phase');
         document.getElementById('context-instruction').innerText = scenario.text;
         contextPhase.classList.remove('hidden');
     } else {
+        logState("Case", 0);
         const experimentPhase = document.getElementById('experiment-phase');
         const buttonArea = document.getElementById('button-area');
         const instructionEl = document.getElementById('task-instruction');
@@ -509,11 +537,10 @@ async function handleChoice(choice) {
     if (currentScenario < finalScenarioList.length) {
         loadScenario();
     } else {
+        logState("Completion Phase", 0);
         document.getElementById('experiment-phase').classList.add('hidden');        
         const completionPhase = document.getElementById('completion-phase');
         completionPhase.classList.remove('hidden');
-        
-        console.log("Experiment finished. Showing completion screen.");
     }
 }
 
