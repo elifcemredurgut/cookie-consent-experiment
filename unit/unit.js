@@ -34,6 +34,7 @@ async function logState(pageName, scrollY = 0) {
     const config = getActiveConfig();
     const payload = {
         user_id: USER_ID,
+        scenario_name: "unit_converter",
         case_name: config.case,
         page_name: pageName,
         scroll_y: Math.round(scrollY),

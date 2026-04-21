@@ -16,6 +16,7 @@ class ExperimentData(SQLModel, table=True):
 class ExperimentState(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: str = Field(index=True)
+    scenario_name: str
     case_name: str
     page_name: str
     scroll_y: int
