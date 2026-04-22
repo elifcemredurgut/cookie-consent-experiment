@@ -40,7 +40,7 @@ const baseScenarios = [
     {
         name: "001_congruent_text",
         isStroop: true,
-        instruction: "Select the button where the text says red",
+        instruction: "Select the option where the text says red",
         category_name: "Stroop",
         buttons: [
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: red;" },
@@ -51,7 +51,7 @@ const baseScenarios = [
     {
         name: "002_congruent_color",
         isStroop: true,
-        instruction: "Select the button with the color red",
+        instruction: "Select the option with the color red",
         category_name: "Stroop",
         buttons: [
             { id: "target", text: "RED", class: "btn-stroop", inlineStyle: "color: red;" },
@@ -62,7 +62,7 @@ const baseScenarios = [
     {
         name: "003_incongruent_text",
         isStroop: true,
-        instruction: "Select the button where the text says red",
+        instruction: "Select the option where the text says red",
         category_name: "Stroop",
         buttons: [
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
@@ -73,7 +73,7 @@ const baseScenarios = [
     {
         name: "004_incongruent_color",
         isStroop: true,
-        instruction: "Select the button with the color red",
+        instruction: "Select the option with the color red",
         category_name: "Stroop",
         buttons: [
             { id: "target", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
@@ -84,7 +84,7 @@ const baseScenarios = [
     {
         name: "005_incongruent_color",
         isStroop: true,
-        instruction: "Select the button with the color green",
+        instruction: "Select the option with the color green",
         category_name: "Stroop",
         buttons: [
             { id: "distractor", text: "GREEN", class: "btn-stroop", inlineStyle: "color: red;" },
@@ -362,9 +362,9 @@ const baseScenarios = [
 ];
 
 const mindsetScenarios = [
-    { id: "unsafe_no_pressure", instruction: "Imagine that you are at Aalto University library and using a public computer found in the library. You need to log in to your bank account to make a money transfer. Tonight is the deadline to make the transfer but you do not have time pressure." },
-    { id: "neutral", instruction: "Imagine that you are at home on a Sunday morning using your personal laptop. You are browsing a local news website to check the weekend weather forecast and read a few headlines. You have no specific time pressure" },
-    { id: "unsafe_pressure", instruction: "Imagine that you are on your own personal laptop at home. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but your friend has just found a website which sells extra tickets with the same price. You just want to finish the transaction before the tickets sell out." }
+    { id: "unsafe_no_pressure", instruction: "Imagine that you are at the Aalto University library, logged into one of the public computers. You need to access your bank account to complete a money transfer. You have plenty of time to complete it. As the website loads, a cookie consent banner pops up. Which do you choose?" },
+    { id: "neutral", instruction: "Imagine that You are at home on your personal laptop, following a recipe from an American blog to bake a cake. The recipe lists the oven temperature in Fahrenheit, so you open a random online converter to find the Celsius equivalent. As the website loads, a cookie consent banner pops up. Which do you choose?" },
+    { id: "unsafe_pressure", instruction: "Imagine that you are at home using your personal laptop. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but a friend just sent you a link to a secondary site offering tickets at the same price. You want to complete the purchase before the tickets sell out. As you enter the site, a cookie consent banner appears. Which do you choose?" }
 ];
 
 function shuffleArray(array) {

@@ -61,7 +61,7 @@
         #task-instruction {
             font-size: 24px;
             font-weight: bold;
-            color: var(--primary-blue);
+            color: var(--black);
             margin-top: 40px;
             margin-bottom: 60px;
         }
@@ -134,12 +134,12 @@
     <div id="mission-overlay">
         <div class="mission-card">
             <h2>START EXPERIMENT</h2>
-            <p>Welcome to the first phase of the study. You will be presented with rapid choices and different context prompts.</p>
+            <p>Welcome to the first phase of the study. You will be presented with different context prompts and two options on each screen.</p>
             <div class="mission-goals">
                 <ul>
                     <li>Follow the changing instructions carefully on each screen.</li>
                     <li>Read any context scenarios presented to you before proceeding.</li>
-                    <li>Click the buttons that match the instruction.</li>
+                    <li>Click the options that match the instruction.</li>
                 </ul>
             </div>
             <button class="btn-salient" style="width: 100%; font-size: 1.1em; padding: 15px; height: auto;" onclick="closeOverlay()">START</button>
@@ -148,7 +148,7 @@
     
     <div id="experiment-container">
         <div id="context-phase" class="hidden">
-            <h2>New Scenario Roleplay</h2>
+            <h2>New Scenario</h2>
             <div id="context-box" style="border: 2px solid #555; padding: 20px; border-radius: 8px; margin: 20px 0;">
                 <p id="context-instruction"></p>
             </div>
