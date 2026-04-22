@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 from database.database import engine, create_db_and_tables
-from model.models import ExperimentData, ExperimentState
+from model.models import ExperimentData, ExperimentState, CustomizeClicks
 
 app = FastAPI()
 
@@ -36,6 +36,13 @@ def log_click(data: ExperimentData):
 def log_state(state: ExperimentState):
     with Session(engine) as session:
         session.add(state)
+        session.commit()
+    return {"status": "success"}
+
+@app.post("/log_customize")
+def log_customize(data: CustomizeClicks):
+    with Session(engine) as session:
+        session.add(data)
         session.commit()
     return {"status": "success"}
 

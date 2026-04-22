@@ -127,7 +127,7 @@ const baseScenarios = [
             { id: "reject", text: "Accept Essential", class: "btn-neutral" },
             { id: "accept", text: "Accept All", class: "btn-neutral" }
         ]
-    },/*
+    },
     // Case 4: Link: Accept Essential | Link: Accept
     {
         name: "104_linkEssential_linkAccept",
@@ -358,7 +358,7 @@ const baseScenarios = [
             { id: "accept", text: "Accept All", class: "btn-neutral" },
             { id: "reject", text: "Reject All", class: "btn-salient" },
         ]
-    },*/
+    },
 ];
 
 const mindsetScenarios = [

@@ -54,6 +54,26 @@ document.querySelector('.customize-body').addEventListener('scroll', function(e)
     logState("Customize Modal", e.target.scrollTop);
 });
 
+async function logCustomizeClicks(elementId, type) {
+    const config = getActiveConfig();
+    const payload = {
+        user_id: USER_ID,
+        scenario_name: "bank_transfer",
+        case_name: config.case,
+        element_id: elementId,
+        interaction_type: type,
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('/log_customize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging customize clicks:", e); }
+}
+
 function getActiveConfig() {
     return {
         case: CASES[currentCaseIndex],
@@ -65,7 +85,17 @@ function togglePurpose(btn) {
     const details = btn.nextElementSibling;
     btn.classList.toggle('active');
     details.classList.toggle('active');
+
+    const isExpanded = btn.classList.contains('active');
+    logCustomizeClicks(btn.id, isExpanded ? "expanded" : "collapsed");
 }
+
+document.querySelectorAll('#customize-modal input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const action = this.checked ? "toggle_on" : "toggle_off";
+        logCustomizeClicks(this.id, action);
+    });
+});
 
 function startMission() {
     experimentStartTime = Date.now();

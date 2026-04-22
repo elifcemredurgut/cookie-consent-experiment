@@ -7,13 +7,13 @@ let currentPage = "";
 
 const CASES = [
     '201_banner_reject-neutral_accept-salient', 
-    /*'202_banner_accept-salient_reject-neutral', */
+    '202_banner_accept-salient_reject-neutral',
     '203_banner_customize-neutral_accept-salient', 
-    /*'204_banner_accept-salient_customize-neutral',
+    '204_banner_accept-salient_customize-neutral',
     '205_banner_accept-salient_customize-salient',
     '206_banner_accept-salient_reject-salient',
     '207_banner_customizetextlink_accept-salient',
-    '208_banner_customizelink_accept-salient',*/
+    '208_banner_customizelink_accept-salient',
     '209_modal_reject-neutral_accept-salient', 
     '210_modal_accept-salient_reject-neutral', 
     '211_modal_customize-neutral_accept-salient', 
@@ -56,6 +56,26 @@ async function logState(pageName, scrollY = 0) {
 document.querySelector('.customize-body').addEventListener('scroll', function(e) {
     logState("Customize Modal", e.target.scrollTop);
 });
+
+async function logCustomizeClicks(elementId, type) {
+    const config = getActiveConfig();
+    const payload = {
+        user_id: USER_ID,
+        scenario_name: "bank_transfer",
+        case_name: config.case,
+        element_id: elementId,
+        interaction_type: type,
+        timestamp: Date.now() / 1000
+    };
+
+    try {
+        await fetch('/log_customize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Error logging customize clicks:", e); }
+}
 
 function getActiveConfig() {
     return {
@@ -138,7 +158,17 @@ function togglePurpose(btn) {
     const details = btn.nextElementSibling;
     btn.classList.toggle('active');
     details.classList.toggle('active');
+
+    const isExpanded = btn.classList.contains('active');
+    logCustomizeClicks(btn.id, isExpanded ? "expanded" : "collapsed");
 }
+
+document.querySelectorAll('#customize-modal input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const action = this.checked ? "toggle_on" : "toggle_off";
+        logCustomizeClicks(this.id, action);
+    });
+});
 
 function startMission() {
     currentPage = "Seat Selection";
