@@ -61,7 +61,7 @@ async function logCustomizeClicks(elementId, type) {
     const config = getActiveConfig();
     const payload = {
         user_id: USER_ID,
-        scenario_name: "bank_transfer",
+        scenario_name: "concert_ticket",
         case_name: config.case,
         element_id: elementId,
         interaction_type: type,
