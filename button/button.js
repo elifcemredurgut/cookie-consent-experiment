@@ -363,7 +363,7 @@ const baseScenarios = [
 
 const mindsetScenarios = [
     { id: "unsafe_no_pressure", instruction: "Imagine that you are at the Aalto University library, logged into one of the public computers. You need to access your bank account to complete a money transfer. You have plenty of time to complete it. As the website loads, a cookie consent banner pops up. Which do you choose?" },
-    { id: "neutral", instruction: "Imagine that You are at home on your personal laptop, following a recipe from an American blog to bake a cake. The recipe lists the oven temperature in Fahrenheit, so you open a random online converter to find the Celsius equivalent. As the website loads, a cookie consent banner pops up. Which do you choose?" },
+    { id: "neutral", instruction: "Imagine that you are at home on your personal laptop, following a recipe from an American blog to bake a cake. The recipe lists the oven temperature in Fahrenheit, so you open a simple online converter to find the Celsius equivalent. As the website loads, a cookie consent banner pops up. Which do you choose?" },
     { id: "unsafe_pressure", instruction: "Imagine that you are at home using your personal laptop. You have been waiting for months to buy tickets for your favorite band’s farewell tour. The tickets are sold out on TicketMaster but a friend just sent you a link to a secondary site offering tickets at the same price. You want to complete the purchase before the tickets sell out. As you enter the site, a cookie consent banner appears. Which do you choose?" }
 ];
 
