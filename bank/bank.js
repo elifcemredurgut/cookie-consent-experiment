@@ -1,6 +1,6 @@
 let experimentStartTime = null;
 
-const CASES = [
+let CASES = [
     '301_banner_reject-neutral_accept-salient', 
     '302_banner_accept-salient_reject-neutral', 
     '303_banner_customize-neutral_accept-salient', 
@@ -19,6 +19,15 @@ const CASES = [
 ];
 
 let currentCaseIndex = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+shuffleArray(CASES);
 
 function getParticipantId() {
     let id = localStorage.getItem('participant_id');

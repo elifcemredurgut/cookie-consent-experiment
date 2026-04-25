@@ -5,7 +5,7 @@ let timerInterval = null;
 let currentCaseIndex = 0;
 let currentPage = "";
 
-const CASES = [
+let CASES = [
     '201_banner_reject-neutral_accept-salient', 
     '202_banner_accept-salient_reject-neutral',
     '203_banner_customize-neutral_accept-salient', 
@@ -22,6 +22,15 @@ const CASES = [
     '214_banner_essential-salient_accept-salient',
     '215_banner_customize-salient_accept-salient_leginterest'
 ];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+shuffleArray(CASES);
 
 function getParticipantId() {
     let id = localStorage.getItem('participant_id');
