@@ -376,8 +376,6 @@ function shuffleArray(array) {
 }
 
 function startTimer(durationSeconds) {
-    if (isTimerRunning) return; 
-
     clearInterval(countdownInterval);
     isTimerRunning = true; 
     let timer = durationSeconds;
@@ -458,7 +456,7 @@ function renderBanner() {
     const scenario = finalScenarioList[currentScenario];
 
     if (scenario.mindsetLabel === "unsafe_pressure" && !scenario.isContextPrompt) {
-        startTimer(120);
+        startTimer(10);
     } else {
         stopTimer();
     }
