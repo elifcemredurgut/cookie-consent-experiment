@@ -9,35 +9,9 @@
         .nav { background: #1f2937; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; }
         .timer-box { background: #ef4444; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 1.1em; }
         
-        .page-wrapper { display: flex; justify-content: center; align-items: flex-start; max-width: 1600px; margin: 0 auto; gap: 20px; }
+        .main-layout { display: flex; max-width: 1200px; margin: 30px auto; gap: 30px; padding: 0 20px; }
         
-        .fake-ad { 
-            width: 160px; 
-            height: 600px; 
-            background: #fff; 
-            border: 1px solid #ddd; 
-            margin-top: 30px; 
-            position: sticky; 
-            top: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            flex-shrink: 0;
-        }
-        
-        .ad-label { font-size: 10px; color: #999; text-align: center; padding: 5px; background: #f9f9f9; border-bottom: 1px solid #eee; }
-        .ad-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; text-align: center; }
-        .ad-img { width: 100%; height: 120px; background: #eee; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; border-radius: 4px; }
-        .ad-title { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; color: #111; }
-        .ad-desc { font-size: 0.85em; color: #555; line-height: 1.4; margin-bottom: 20px; }
-        .ad-price { font-size: 1.2em; color: #B12704; font-weight: bold; margin-bottom: 15px; }
-        .ad-button { background: #FFD814; border: 1px solid #FCD200; border-radius: 20px; padding: 8px 15px; font-size: 0.8em; cursor: pointer; width: 100%; }
-        .ad-button.travel { background: #0071eb; color: white; border: none; }
-
-        .main-layout { display: flex; max-width: 1200px; margin: 30px 0; gap: 30px; padding: 0 20px; flex: 1; }
-        
-        .map-card { flex: 2; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .map-card { flex: 2; background: white; padding: 30px; border-radius: 8px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .stage { background: #333; color: #888; text-align: center; padding: 20px; margin: 0 auto 50px auto; width: 60%; border-radius: 0 0 80px 80px; font-weight: bold; letter-spacing: 5px; }
         
         .section-container { margin-bottom: 40px; }
@@ -323,93 +297,67 @@
     </div>
 </div>
 
-<div class="page-wrapper">
-    <div class="fake-ad">
-        <div class="ad-label">ADVERTISEMENT</div>
-        <div class="ad-content">
-            <div class="ad-img">🎧</div>
-            <div class="ad-title">Bose QuietComfort</div>
-            <p class="ad-desc">World-class noise cancelling. Deep, clear sound. High-comfort design.</p>
-            <div class="ad-price">$299.00</div>
-            <button class="ad-button">Shop on Amazon</button>
+<div class="main-layout" id="selection-screen">
+    <div class="map-card">
+        <div class="stage">STAGE</div>
+        
+        <div class="section-container">
+            <div class="section-title">FRONT FLOOR</div>
+            <div id="grid-floor" class="seat-grid"></div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">UPPER FLOOR</div>
+            <div id="grid-bowl" class="seat-grid"></div>
         </div>
     </div>
 
-    <div class="main-layout" id="selection-screen">
-        <div class="map-card">
-            <div class="stage">STAGE</div>
-            
-            <div class="section-container">
-                <div class="section-title">FRONT FLOOR</div>
-                <div id="grid-floor" class="seat-grid"></div>
-            </div>
-
-            <div class="section-container">
-                <div class="section-title">UPPER FLOOR</div>
-                <div id="grid-bowl" class="seat-grid"></div>
-            </div>
+    <div class="sidebar">
+        <h3>Your Tickets</h3>
+        <div id="ticket-list">
+            <p style="color: #999;">Select seats to continue</p>
         </div>
-
-        <div class="sidebar">
-            <h3>Your Tickets</h3>
-            <div id="ticket-list">
-                <p style="color: #999;">Select seats to continue</p>
-            </div>
-            <div class="total-price">
-                Total: <span id="display-total">$0.00</span>
-            </div>
-            <button id="main-buy-btn" class="btn-checkout" onclick="showCheckoutForm()" disabled>
-                Purchase Tickets
-            </button>
-            <p style="font-size: 0.8em; color: #666; margin-top: 15px; text-align: center;">*Additional fees calculated at next step</p>
+        <div class="total-price">
+            Total: <span id="display-total">$0.00</span>
         </div>
-    </div>
-
-    <div class="main-layout hidden" id="checkout-screen" style="max-width: 800px; margin: 30px auto;">
-        <div class="map-card">
-            <h2>Contact & Payment Information</h2>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="form-email" placeholder="email@example.com">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="form-phone" placeholder="+358 40 000 0000">
-            </div>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <div class="form-group">
-                <label>Credit Card Number</label>
-                <input type="text" id="card-num" placeholder="0000 0000 0000 0000">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 2;">
-                    <label>Expiry Date</label>
-                    <input type="text" id="expiry" placeholder="MM/YY">
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>CVC</label>
-                    <input type="text" id="cvc" placeholder="123">
-                </div>
-            </div>
-            <button id="confirm-pay-btn" class="btn-checkout" onclick="completePurchase()">
-                Confirm & Pay
-            </button>
-        </div>
-    </div>
-
-    <div class="fake-ad">
-        <div class="ad-label">ADVERTISEMENT</div>
-        <div class="ad-content">
-            <div class="ad-img">🏖️</div>
-            <div class="ad-title">Explore Bali</div>
-            <p class="ad-desc">Book your dream vacation today. Flights + Hotels from $899.</p>
-            <div class="ad-price">LAST MINUTE DEALS</div>
-            <button class="ad-button travel">Book My Trip</button>
-        </div>
+        <button id="main-buy-btn" class="btn-checkout" onclick="showCheckoutForm()" disabled>
+            Purchase Tickets
+        </button>
+        <p style="font-size: 0.8em; color: #666; margin-top: 15px; text-align: center;">*Additional fees calculated at next step</p>
     </div>
 </div>
 
-
+<div class="main-layout hidden" id="checkout-screen">
+    <div class="map-card">
+        <h2>Contact & Payment Information</h2>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="form-email" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="form-phone" placeholder="+358 40 000 0000">
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <div class="form-group">
+            <label>Credit Card Number</label>
+            <input type="text" id="card-num" placeholder="0000 0000 0000 0000">
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 2;">
+                <label>Expiry Date</label>
+                <input type="text" id="expiry" placeholder="MM/YY">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>CVC</label>
+                <input type="text" id="cvc" placeholder="123">
+            </div>
+        </div>
+        <button id="confirm-pay-btn" class="btn-checkout" onclick="completePurchase()">
+            Confirm & Pay
+        </button>
+    </div>
+</div>
 
 <div id="success-screen" class="hidden" style="text-align: center; margin-top: 100px;">
     <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
