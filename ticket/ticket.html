@@ -24,6 +24,7 @@
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             flex-shrink: 0;
+            z-index: 10;
         }
         
         .ad-label { font-size: 10px; color: #999; text-align: center; padding: 5px; background: #f9f9f9; border-bottom: 1px solid #eee; }
@@ -299,6 +300,9 @@
             z-index: 9999 !important;
         }
         .cookie-content a { color: #60a5fa; text-decoration: underline; cursor: pointer; }
+        #success-screen.hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -335,68 +339,77 @@
         </div>
     </div>
 
-    <div class="main-layout" id="selection-screen">
-        <div class="map-card">
-            <div class="stage">STAGE</div>
-            
-            <div class="section-container">
-                <div class="section-title">FRONT FLOOR</div>
-                <div id="grid-floor" class="seat-grid"></div>
-            </div>
-
-            <div class="section-container">
-                <div class="section-title">UPPER FLOOR</div>
-                <div id="grid-bowl" class="seat-grid"></div>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <h3>Your Tickets</h3>
-            <div id="ticket-list">
-                <p style="color: #999;">Select seats to continue</p>
-            </div>
-            <div class="total-price">
-                Total: <span id="display-total">$0.00</span>
-            </div>
-            <button id="main-buy-btn" class="btn-checkout" onclick="showCheckoutForm()" disabled>
-                Purchase Tickets
-            </button>
-            <p style="font-size: 0.8em; color: #666; margin-top: 15px; text-align: center;">*Additional fees calculated at next step</p>
-        </div>
-    </div>
-
-    <div class="main-layout hidden" id="checkout-screen" style="max-width: 800px; margin: 30px auto;">
-        <div class="map-card">
-            <h2>Contact & Payment Information</h2>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="form-email" placeholder="email@example.com">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="form-phone" placeholder="+358 40 000 0000">
-            </div>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <div class="form-group">
-                <label>Credit Card Number</label>
-                <input type="text" id="card-num" placeholder="0000 0000 0000 0000">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 2;">
-                    <label>Expiry Date</label>
-                    <input type="text" id="expiry" placeholder="MM/YY">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 1200px;">
+        <div class="main-layout" id="selection-screen" style="width: 100%; max-width: none; margin: 30px 0;">
+            <div class="map-card">
+                <div class="stage">STAGE</div>
+                
+                <div class="section-container">
+                    <div class="section-title">FRONT FLOOR</div>
+                    <div id="grid-floor" class="seat-grid"></div>
                 </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>CVC</label>
-                    <input type="text" id="cvc" placeholder="123">
+
+                <div class="section-container">
+                    <div class="section-title">UPPER FLOOR</div>
+                    <div id="grid-bowl" class="seat-grid"></div>
                 </div>
             </div>
-            <button id="confirm-pay-btn" class="btn-checkout" onclick="completePurchase()">
-                Confirm & Pay
-            </button>
+
+            <div class="sidebar">
+                <h3>Your Tickets</h3>
+                <div id="ticket-list">
+                    <p style="color: #999;">Select seats to continue</p>
+                </div>
+                <div class="total-price">
+                    Total: <span id="display-total">$0.00</span>
+                </div>
+                <button id="main-buy-btn" class="btn-checkout" onclick="showCheckoutForm()" disabled>
+                    Purchase Tickets
+                </button>
+                <p style="font-size: 0.8em; color: #666; margin-top: 15px; text-align: center;">*Additional fees calculated at next step</p>
+            </div>
+        </div>
+
+        <div class="main-layout hidden" id="checkout-screen" style="width: 100%; max-width: none; margin: 30px 0;">
+            <div class="map-card">
+                <h2>Contact & Payment Information</h2>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="form-email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="form-phone" placeholder="+358 40 000 0000">
+                </div>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <div class="form-group">
+                    <label>Credit Card Number</label>
+                    <input type="text" id="card-num" placeholder="0000 0000 0000 0000">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>CVC</label>
+                        <input type="text" id="cvc" placeholder="123">
+                    </div>
+                </div>
+                <button id="confirm-pay-btn" class="btn-checkout" onclick="completePurchase()">
+                    Confirm & Pay
+                </button>
+            </div>
+        </div>
+
+        <div id="success-screen" class="hidden" style="text-align: center; margin: 30px 0;">
+            <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
+            <p>Your tickets have been reserved.</p>
+            <p>Check your email box and phone (SMS) for the digital QR codes and payment receipts.</p>
+            <button id="continue" class="btn-continue" onclick="nextScenario()" style="background: #026cdf;">CONTINUE</button>
         </div>
     </div>
-
+    
     <div class="fake-ad">
         <div class="ad-label">ADVERTISEMENT</div>
         <div class="ad-content">
@@ -410,13 +423,6 @@
 </div>
 
 
-
-<div id="success-screen" class="hidden" style="text-align: center; margin-top: 100px;">
-    <h1 style="color: #10b981;">✓ Purchase Successful!</h1>
-    <p>Your tickets have been reserved.</p>
-    <p>Check your email box and phone (SMS) for the digital QR codes and payment receipts.</p>
-    <button id="continue" class="btn-continue" onclick="nextScenario()" style="background: #026cdf;">CONTINUE</button>
-</div>
 <div id="modal-backdrop" class="hidden"></div>
 <div id="cookie-banner" class="hidden">
     <div class="cookie-content">
